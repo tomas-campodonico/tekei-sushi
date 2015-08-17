@@ -1,0 +1,4 @@
+.client-dropdown {
+	width: calc(100% - 50px);
+	display: inline;
+}

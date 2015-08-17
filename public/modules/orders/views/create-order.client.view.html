@@ -1,0 +1,77 @@
+<section data-ng-controller="OrdersController" ng-init="fetchClientsAndProducts()">
+    <div class="page-header">
+        <h1>New Order</h1>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset>
+                <!-- Client panel -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Client</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="col-md-6 col-sm-6">
+                            <label class="control-label">Client</label>
+                            <div>
+                                <select class="client-dropdown form-control" ng-model="client" ng-change="selectClient()">
+                                    <option value="">No Client</option>
+                                    <option ng-repeat="client in clients" value="{{client}}">{{client.fullname}}</option>
+                                </select>
+                                <a class="btn btn-success pull-right" href="/#!/clients/create">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <label class="control-label">Date</label>
+                            <div class="controls">
+                                <input type="date" class="form-control" ng-model="date" required />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <label class="control-label">Address</label>
+                            <div class="controls">
+                                <input type="text" class="form-control" placeholder="Address" ng-model="address" required />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <label class="control-label">Phone number</label>
+                            <div class="controls">
+                                <input type="text" class="form-control" placeholder="Phone number" ng-model="phone" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products panel -->
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Products</h3>
+                    </div>
+                    <div class="panel-body">
+                        Total: {{order.price}}
+                        <a class="btn btn-success pull-right" href="/#!/clients/create">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default">
+                </div>
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
