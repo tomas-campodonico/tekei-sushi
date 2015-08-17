@@ -1,0 +1,31 @@
+<section data-ng-controller="IngredientsController" data-ng-init="find()" class="ingredients">
+    <div class="page-header">
+        <h1>Ingredients</h1>
+        <a class="btn btn-success pull-right" href="/#!/ingredients/create">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="input-group" ng-hide="!ingredients.length">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </span>
+        <input placeholder="Search" class="form-control" ng-model="searchText" class="pull-right">
+    </div>
+
+    <table id="ingredients-table" class="table table-hover table-responsive clickable-table" ng-hide="!ingredients.length">
+        <thead>
+            <th>Name</th>
+            <th>Quantity</th>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="ingredient in ingredients | filter:searchText" ng-click="showIngredient(ingredient._id)">
+                <td class="list-group-item-heading" data-ng-bind="ingredient.name"></td>
+                <td class="list-group-item-heading" data-ng-bind="ingredient.amount"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-hide="ingredients.length">
+        There is no ingredient created. <a href="/#!/ingredients/create">Why don't you create a new one?</a>
+    </div>
+</section>

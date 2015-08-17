@@ -1,0 +1,23 @@
+<section data-ng-controller="ProductsController" data-ng-init="findOne()">
+	<div class="page-header">
+		<h1>{{product.name}} <span class="badge">$ {{product.price}}</span></h1>
+	</div>
+	<div class="pull-right" data-ng-show="authentication.user">
+		<a class="btn btn-primary" href="/#!/products/{{product._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+	<div>
+		<label>Ingredients</label>
+		<table class="table">
+			<tbody>
+				<tr data-ng-repeat="ingredient in product.ingredients">
+					<td data-ng-bind="ingredient.ingredient"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

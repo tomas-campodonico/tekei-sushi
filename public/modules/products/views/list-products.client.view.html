@@ -1,0 +1,29 @@
+<section data-ng-controller="ProductsController" data-ng-init="find()" class="products">
+    <div class="page-header">
+        <h1>Products</h1>
+        <a class="btn btn-success pull-right" href="/#!/products/create">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="input-group" ng-hide="!products.length">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </span>
+        <input placeholder="Search" class="form-control" ng-model="searchText" class="pull-right">
+    </div>
+    
+    <table id="client-table" class="table table-hover table-responsive clickable-table" ng-hide="!products.length">
+        <thead>
+            <th>Name</th>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="product in products | filter:searchText" ng-click="showProduct(product._id)">
+                <td class="list-group-item-heading" data-ng-bind="product.name"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-hide="products.length">
+        There is no product created. <a href="/#!/products/create">Why don't you create a new one?</a>
+    </div>
+</section>

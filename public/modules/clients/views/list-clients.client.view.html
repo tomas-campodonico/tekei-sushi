@@ -1,0 +1,33 @@
+<section data-ng-controller="ClientsController" data-ng-init="find()" class="clients">
+    <div class="page-header">
+        <h1>Clients</h1>
+        <a class="btn btn-success pull-right" href="/#!/clients/create">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="input-group" ng-hide="!clients.length">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </span>
+        <input placeholder="Search" class="form-control" ng-model="searchText" class="pull-right">
+    </div>
+
+    <table id="client-table" class="table table-hover table-responsive clickable-table" ng-hide="!clients.length">
+        <thead>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone number</th>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="client in clients | filter:searchText" ng-click="showClient(client._id)">
+                <td class="list-group-item-heading" data-ng-bind="client.fullname"></td>
+                <td class="list-group-item-heading" data-ng-bind="client.address"></td>
+                <td class="list-group-item-heading" data-ng-bind="client.phone"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-hide="clients.length">
+        There is no client created. <a href="/#!/clients/create">Why don't you create a new one?</a>
+    </div>
+</section>
