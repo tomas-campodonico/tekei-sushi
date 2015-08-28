@@ -1,4 +1,39 @@
 <section data-ng-controller="OrdersController" ng-init="fetchClientsAndProducts()">
+
+  <!-- Modal -->
+  <script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+      <h3 class="modal-title">Client lookup</h3>
+    </div>
+    <div class="modal-body">
+      <label>Client name</label>
+      <input type="text" ng-model="phoneFilter.fullname" placeholder="Name" class="form-control" />
+      <label>Phone number</label>
+      <input type="text" ng-model="phoneFilter.phone" placeholder="Phone number" class="form-control" />
+      <label>Address</label>
+      <input type="text" ng-model="phoneFilter.address" placeholder="Address"class="form-control" />
+      <table class="table responsive-table">
+        <thead>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Address</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="client in clients | filter:phoneFilter:strict" ng-click="selected.client = client">
+            <td>{{client.fullname}}</td>
+            <td>{{client.phone}}</td>
+            <td>{{client.address}}</td>
+          </tr>
+        </tbody>
+      </table>
+      Selected: <b>{{ selected.client.fullname }}</b>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="selectClientInModal()">Select</button>
+      <button class="btn btn-warning" type="button" ng-click="dismissModal()">Cancel</button>
+    </div>
+  </script>
+
     <div class="page-header">
         <h1>New Order</h1>
     </div>
@@ -19,9 +54,13 @@
                                     <option value="">No Client</option>
                                     <option ng-repeat="client in clients" value="{{client}}">{{client.fullname}}</option>
                                 </select>
-                                <a class="btn btn-success pull-right" href="/#!/clients/create">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                <a class="btn btn-default pull-right" ng-click="openModal()">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </a>
+                            </div>
+                            <div ng-show="!clientSelected">
+                                <label class="control-label">Name</label>
+                                <input type="text" placeholder="Client name" class="form-control" ng-model="client" />
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6">
@@ -50,23 +89,57 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Products</h3>
                     </div>
-                    <div class="panel-body">
-                        Total: {{order.price}}
-                        <a class="btn btn-success pull-right" href="/#!/clients/create">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        </a>
+                    <div class="panel-body products-panel-body">
+
+                      <!-- Price -->
+                      <div class="col-md-6 col-sm-6">
+                        <h4>Total</h4>
+                        <div class="input-group price">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                        </span>
+                        <input disabled type="number" data-ng-model="price" class="form-control pull-right" />
+                      </div>
+                      </div>
+                      
+
+                      <!-- Discount -->
+                      <div class="col-md-6 col-sm-6">
+                        <h4>Discount</h4>
+                        <div class="input-group discount">
+                          <input type="number" step="1" min="0" max="100" data-ng-model="discount" class="form-control" required ng-change="updatePrice()" />
+                          <span class="input-group-addon">
+                            <span aria-hidden="true">%</span>
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <a class="add-product-btn btn btn-success pull-right" ng-click="addProduct()">
+                          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                      </a>
                     </div>
                     <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <li ng-repeat="product in products" class="list-group-item">
+                          <div class="col-md-6 col-sm-6">
+                            <select class="form-control"
+                                    data-ng-model="product.product"
+                                    required
+                                    ng-change="updatePrice()"
+                                    ng-options="option as option.name for option in productList">
+                            </select>
+                          </div>
+                          <div class="col-md-6 col-sm-6">
+                            <input class="form-control" type="number" step="1" min="0" required ng-model="product.quantity" ng-change="updatePrice()" />
+                            <a class="btn btn-danger pull-right" ng-click="removeProduct($index)">
+                              <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            </a>
+                          </div>
+                        </li>
                     </ul>
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" class="btn btn-default">
+                    <input type="submit" class="btn btn-default" ng-disabled="!products.length">
                 </div>
                 <div data-ng-show="error" class="text-danger">
                     <strong data-ng-bind="error"></strong>

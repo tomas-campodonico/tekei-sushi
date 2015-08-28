@@ -1,4 +1,27 @@
 .client-dropdown {
 	width: calc(100% - 50px);
-	display: inline;
+	display: inline-block;
+}
+
+.list-group li {
+	display: flex;
+}
+
+.list-group li input[type="number"] {
+	width: calc(100% - 50px);
+	display: inline-block;
+}
+
+.add-product-btn {
+	position: absolute;
+	top: 10px;
+	right: 30px;
+}
+
+.products-panel-body {
+	position: relative;
+}
+
+.modal-body tr {
+	cursor: pointer;
 }
