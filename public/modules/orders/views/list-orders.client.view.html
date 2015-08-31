@@ -1,19 +1,37 @@
-<section data-ng-controller="OrdersController" data-ng-init="find()">
+<section data-ng-controller="OrdersController" data-ng-init="find()" class="orders">
     <div class="page-header">
         <h1>Orders</h1>
-    </div>
-    <div class="list-group">
-        <a data-ng-repeat="order in orders" data-ng-href="#!/orders/{{order._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="order.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="order.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="order.name"></h4>
+        <a class="btn btn-success pull-right" href="/#!/orders/create">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </a>
     </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!orders.$resolved || orders.length">
-    	No Orders yet, why don't you <a href="/#!/orders/create">create one</a>?
+    <div class="input-group" ng-hide="!orders.length">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </span>
+        <input placeholder="Search" class="form-control" ng-model="searchText" class="pull-right">
+    </div>
+
+    <div ng-hide="!orders.length">
+        <input type="checkbox" ng-model="notDeliveredFilter"> Show only not delivered orders
+    </div>
+    
+    <table id="search-table" class="table table-hover table-responsive clickable-table" ng-hide="!orders.length">
+        <thead>
+            <th>Client name</th>
+            <th>Address</th>
+            <th>Delivery Date</th>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="order in orders | filter:searchText" ng-click="showOrder(order._id)">
+                <td class="list-group-item-heading" data-ng-bind="order.client.fullname"></td>
+                <td class="list-group-item-heading" data-ng-bind="order.address"></td>
+                <td class="list-group-item-heading">{{order.deliveryDate | date:'dd/MM/yyyy || HH:mm'}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-hide="orders.length">
+        There is no order created. <a href="/#!/orders/create">Why don't you create a new one?</a>
     </div>
 </section>

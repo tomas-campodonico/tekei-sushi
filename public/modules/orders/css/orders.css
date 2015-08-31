@@ -25,3 +25,33 @@
 .modal-body tr {
 	cursor: pointer;
 }
+
+.add-client-btn {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+}
+
+.client-name-input {
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+}
+
+.orders .page-header {
+	position: relative;
+	height: 70px;
+}
+
+.orders .page-header h1 {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.orders .page-header a {
+	position: absolute;
+	right: 0;
+	top: 0;
+	text-align: right;
+	margin: 20px 0 10px;
+}

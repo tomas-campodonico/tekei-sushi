@@ -4,6 +4,9 @@
   <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
       <h3 class="modal-title">Client lookup</h3>
+      <a class="add-client-btn btn btn-success pull-right" href="/#!/clients/create" ng-click="dismissModal()">
+        <span>New Client</span>
+      </a>
     </div>
     <div class="modal-body">
       <label>Client name</label>
@@ -52,33 +55,40 @@
                             <div>
                                 <select class="client-dropdown form-control" ng-model="client" ng-change="selectClient()">
                                     <option value="">No Client</option>
-                                    <option ng-repeat="client in clients" value="{{client}}">{{client.fullname}}</option>
+                                    <option ng-repeat="client in clients" value="{{client.id}}">{{client.fullname}}</option>
                                 </select>
                                 <a class="btn btn-default pull-right" ng-click="openModal()">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </a>
                             </div>
-                            <div ng-show="!clientSelected">
-                                <label class="control-label">Name</label>
-                                <input type="text" placeholder="Client name" class="form-control" ng-model="client" />
+                            <div ng-show="!clientSelected" class="client-name-input form-group has-feedback" ng-class="{'has-success' : newClientName.length && validName, 'has-error': !newClientName.length || !validName}">
+                              <label class="control-label">Name</label>
+                              <input type="text" placeholder="Client name" class="form-control" ng-model="newClientName" ng-change="validateClientName()">
+                              <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="newClientName.length > 0 && validName" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="newClientName.length === 0 || !validName" aria-hidden="true"></span>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6">
                             <label class="control-label">Date</label>
-                            <div class="controls">
-                                <input type="date" class="form-control" ng-model="date" required />
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker">
+                                    <input ng-model="order.deliveryDate" type="text" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12">
                             <label class="control-label">Address</label>
                             <div class="controls">
-                                <input type="text" class="form-control" placeholder="Address" ng-model="address" required />
+                                <input type="text" class="form-control" placeholder="Address" ng-model="order.address" required />
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12">
                             <label class="control-label">Phone number</label>
                             <div class="controls">
-                                <input type="text" class="form-control" placeholder="Phone number" ng-model="phone" required />
+                                <input type="text" class="form-control" placeholder="Phone number" ng-model="order.phone" required />
                             </div>
                         </div>
                     </div>
@@ -98,7 +108,7 @@
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
                         </span>
-                        <input disabled type="number" data-ng-model="price" class="form-control pull-right" />
+                        <input disabled type="number" data-ng-model="order.price" class="form-control pull-right" />
                       </div>
                       </div>
                       
@@ -107,7 +117,7 @@
                       <div class="col-md-6 col-sm-6">
                         <h4>Discount</h4>
                         <div class="input-group discount">
-                          <input type="number" step="1" min="0" max="100" data-ng-model="discount" class="form-control" required ng-change="updatePrice()" />
+                          <input type="number" step="1" min="0" max="100" data-ng-model="order.discount" class="form-control" required ng-change="updatePrice()" />
                           <span class="input-group-addon">
                             <span aria-hidden="true">%</span>
                           </span>

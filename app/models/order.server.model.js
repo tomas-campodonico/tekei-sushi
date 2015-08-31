@@ -43,6 +43,10 @@ var OrderSchema = new Schema({
 	},
 	price: {
 		type: Number
+	},
+	discount: {
+		type: Number,
+		default: 0
 	}
 });
 

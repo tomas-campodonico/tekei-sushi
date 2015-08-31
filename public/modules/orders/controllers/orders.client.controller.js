@@ -5,43 +5,61 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 	function($scope, $stateParams, $location, $modal, Authentication, Orders, Products, Clients) {
 		$scope.authentication = Authentication;
 
+		$scope.order = new Orders({
+			delivered: false,
+			date: new Date(),
+			deliveryDate: moment(new Date()).format('DD/MM/YYYY hh:mm a'),
+			discount: 0,
+			price: 0
+		});
 		$scope.products = [];
-		$scope.discount = 0;
-		$scope.price = 0;
-		$scope.clientSelected = false;
+		$scope.newClientName = '';
+		$scope.validName = true;
+		$scope.clientSelected = null;
 
 		// Fetch client's and product's info
 		$scope.fetchClientsAndProducts = function() {
 			$scope.clients = Clients.query();
 			$scope.productList = Products.query();
+
+			var date = angular.element(document.getElementById('datetimepicker'));
+			date.datetimepicker({
+				format: 'DD/MM/YYYY hh:mm a',
+				minDate: new Date(),
+				defaultDate: new Date()
+			});
 		};
 
-		// Select client in dropdown
+		// Check if there is a client with the given name and surname
+		$scope.validateClientName = function() {
+			$scope.validName = !_.findWhere($scope.clients, {
+				fullname: $scope.newClientName
+			});
+		};
+
+		// Select client
 		$scope.selectClient = function() {
-			if (typeof this.client !== 'string') {
-				this.client = JSON.stringify(this.client);
-			}
-			this.clientSelected = this.client;
 			if (this.client) {
-				this.phone = JSON.parse(this.client).phone;
-				this.address = JSON.parse(this.client).address;
-			} else {
-				this.phone = '';
-				this.address = '';
+				this.clientSelected = Clients.get({
+					clientId: this.client
+				}, function() {
+					//update address and phone
+					$scope.order.address = $scope.clientSelected.address;
+					$scope.order.phone = $scope.clientSelected.phone;
+				});
+
+
 			}
 		};
 
 		// Create new Order
 		$scope.create = function() {
 			// Create new Order object
-			var order = new Orders({
-				client: JSON.parse(this.client)._id || 0,
-				address: this.address,
-				phone: this.phone,
-				delivered: false,
-				deliveryDate: this.date,
-				products: this.cleanUpProducts()
-			});
+			var order = this.order;
+			order.client = this.client || 0;
+			order.clientName = this.newClientName;
+			order.products = this.cleanUpProducts();
+			order.deliveryDate = angular.element(document.getElementById('datetimepicker')).data('DateTimePicker').date().format();
 
 			// Redirect after save
 			order.$save(function(response) {
@@ -84,7 +102,12 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 
 		// Find a list of Orders
 		$scope.find = function() {
-			$scope.orders = Orders.query();
+			$scope.clients = Clients.query();
+			$scope.orders = Orders.query(function() {
+				_.forEach($scope.orders, function(order) {
+					order.client = _.findWhere($scope.clients, {id: order.client});
+				});
+			});
 		};
 
 		// Find existing Order
@@ -116,7 +139,7 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 				price += (this.products[i].product.price * this.products[i].quantity);
 			}
 
-			$scope.price = price - (price * $scope.discount / 100);
+			$scope.order.price = price - (price * $scope.order.discount / 100);
 		};
 
 		// Return the array of products ready to be saved
@@ -129,7 +152,7 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 		};
 
 		// Open the modal to search a client
-		$scope.openModal = function () {
+		$scope.openModal = function() {
 			var modalInstance = $modal.open({
 				animation: true,
 				templateUrl: 'myModalContent.html',
@@ -143,26 +166,30 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 			});
 
 			modalInstance.result.then(function(selectedItem) {
-				$scope.client = selectedItem;
+				$scope.client = selectedItem.id;
 				$scope.selectClient();
 			});
+		};
+
+		$scope.showOrder = function(id) {
+			$location.path('/orders/' + id);
 		};
 	}
 ]);
 
-angular.module('orders').controller('ModalInstanceCtrl', function ($scope, $modalInstance, clients) {
+angular.module('orders').controller('ModalInstanceCtrl', function($scope, $modalInstance, clients) {
 
-  $scope.clients = clients;
-  $scope.phoneFilter = '';
-  $scope.selected = {
-    client: $scope.clients[0]
-  };
+	$scope.clients = clients;
+	$scope.phoneFilter = '';
+	$scope.selected = {
+		client: $scope.clients[0]
+	};
 
-  $scope.selectClientInModal = function () {
-    $modalInstance.close($scope.selected.client);
-  };
+	$scope.selectClientInModal = function() {
+		$modalInstance.close($scope.selected.client);
+	};
 
-  $scope.dismissModal = function () {
-    $modalInstance.dismiss('cancel');
-  };
+	$scope.dismissModal = function() {
+		$modalInstance.dismiss('cancel');
+	};
 });
