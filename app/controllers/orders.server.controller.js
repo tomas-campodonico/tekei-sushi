@@ -13,12 +13,20 @@ var mongoose = require('mongoose'),
  * Create a Order
  */
 exports.create = function(req, res) {
+	//Keep only products id
+	for (var i = 0; i < req.body.products.length; i++) {
+		req.body.products[i].product = req.body.products[i].product._id;
+	}
+
 	if (req.body.client === 0 && req.body.clientName) {
 		// Create new client
 		var names = req.body.clientName.split(' ');
+		var name = names[0];
+		names.shift();
+
 		var client = new Client({
-			name: names[0],
-			surname: names.shift().join(' '),
+			name: name,
+			surname:  names.join(' '),
 			address: req.body.address,
 			phone: req.body.phone
 		});
@@ -132,8 +140,5 @@ exports.orderByID = function(req, res, next, id) {
  * Order authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.order.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
 	next();
 };

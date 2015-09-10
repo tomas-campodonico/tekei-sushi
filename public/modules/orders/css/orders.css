@@ -55,3 +55,11 @@
 	text-align: right;
 	margin: 20px 0 10px;
 }
+
+.alert {
+	position: fixed;
+    bottom: 20px;
+    right: 40px;
+    left: 40px;
+    z-index: 1000;
+}

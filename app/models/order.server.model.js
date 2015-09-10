@@ -41,6 +41,10 @@ var OrderSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	cancelled: {
+		type: Boolean,
+		default: false
+	},
 	price: {
 		type: Number
 	},

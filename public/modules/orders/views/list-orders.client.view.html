@@ -18,15 +18,24 @@
     
     <table id="search-table" class="table table-hover table-responsive clickable-table" ng-hide="!orders.length">
         <thead>
-            <th>Client name</th>
-            <th>Address</th>
-            <th>Delivery Date</th>
+            <th class="text-center">Client name</th>
+            <th class="text-center">Address</th>
+            <th class="text-center">Delivery Date</th>
+            <th class="text-center">Operations</th>
         </thead>
         <tbody>
-            <tr data-ng-repeat="order in orders | filter:searchText" ng-click="showOrder(order._id)">
+            <tr data-ng-repeat="order in orders | orderBy:'deliveryDate' | filter:searchText | filter: (notDeliveredFilter || '') && {delivered:false}" ng-click="showOrder(order._id)">
                 <td class="list-group-item-heading" data-ng-bind="order.client.fullname"></td>
                 <td class="list-group-item-heading" data-ng-bind="order.address"></td>
-                <td class="list-group-item-heading">{{order.deliveryDate | date:'dd/MM/yyyy || HH:mm'}}</td>
+                <td class="list-group-item-heading">
+                    {{order.deliveryDate | date:'dd/MM/yyyy'}}
+                    <span class="badge">{{order.deliveryDate | date:'HH:mm'}}</span>
+                </td>
+                <td class="list-group-item-heading text-center">
+                    <button class="btn btn-success" ng-show="!order.cancelled" ng-click="changeStatus(order._id, 1, $event)">{{order.delivered ? 'Mark as Pending': 'Mark as Delivered'}}</button>
+                    <button class="btn btn-alert" ng-disabled="{{order.delivered}}" ng-click="changeStatus(order._id, 2, $event)">{{order.cancelled ? 'Undo': 'Cancel'}}</button>
+                    <button class="btn btn-danger" ng-show="order.cancelled" ng-click="remove(order)">Delete</button>
+                </td>
             </tr>
         </tbody>
     </table>

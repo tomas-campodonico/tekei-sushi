@@ -37,124 +37,125 @@
     </div>
   </script>
 
-    <div class="page-header">
-        <h1>New Order</h1>
-    </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
-            <fieldset>
-                <!-- Client panel -->
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Client</h3>
-                    </div>
+  <div class="page-header">
+    <h1>New Order</h1>
+  </div>
+  <div class="col-md-12">
+    <form class="form-horizontal" data-ng-submit="create()" novalidate>
+      <fieldset>
+        <!-- Client panel -->
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Client</h3>
+          </div>
 
-                    <div class="panel-body">
-                        <div class="col-md-6 col-sm-6">
-                            <label class="control-label">Client</label>
-                            <div>
-                                <select class="client-dropdown form-control" ng-model="client" ng-change="selectClient()">
-                                    <option value="">No Client</option>
-                                    <option ng-repeat="client in clients" value="{{client.id}}">{{client.fullname}}</option>
-                                </select>
-                                <a class="btn btn-default pull-right" ng-click="openModal()">
-                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                            <div ng-show="!clientSelected" class="client-name-input form-group has-feedback" ng-class="{'has-success' : newClientName.length && validName, 'has-error': !newClientName.length || !validName}">
-                              <label class="control-label">Name</label>
-                              <input type="text" placeholder="Client name" class="form-control" ng-model="newClientName" ng-change="validateClientName()">
-                              <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="newClientName.length > 0 && validName" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="newClientName.length === 0 || !validName" aria-hidden="true"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                            <label class="control-label">Date</label>
-                            <div class="form-group">
-                                <div class="input-group date" id="datetimepicker">
-                                    <input ng-model="order.deliveryDate" type="text" class="form-control" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12">
-                            <label class="control-label">Address</label>
-                            <div class="controls">
-                                <input type="text" class="form-control" placeholder="Address" ng-model="order.address" required />
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12">
-                            <label class="control-label">Phone number</label>
-                            <div class="controls">
-                                <input type="text" class="form-control" placeholder="Phone number" ng-model="order.phone" required />
-                            </div>
-                        </div>
-                    </div>
+          <div class="panel-body">
+            <div class="col-md-6 col-sm-6">
+              <label class="control-label">Client</label>
+              <div>
+                <select class="client-dropdown form-control" ng-model="client" ng-change="selectClient()">
+                  <option value="">No Client</option>
+                  <option ng-repeat="client in clients" value="{{client.id}}">{{client.fullname}}</option>
+                </select>
+                <a class="btn btn-default pull-right" ng-click="openModal()">
+                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </a>
+              </div>
+              <div ng-show="!clientSelected" class="client-name-input form-group has-feedback" ng-class="{'has-success' : newClientName.length && validName, 'has-error': !newClientName.length || !validName}">
+                <label class="control-label">Name and surname (both are mandatory)</label>
+                <input type="text" placeholder="Client name" class="form-control" ng-model="newClientName" ng-change="validateClientName()">
+                <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="newClientName.length > 0 && validName" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="newClientName.length === 0 || !validName" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <label class="control-label">Date</label>
+              <div class="form-group">
+                <div class="input-group date" id="datetimepicker">
+                  <input ng-model="order.deliveryDate" type="text" class="form-control" />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
                 </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+              <label class="control-label">Address</label>
+              <div class="controls">
+                <input type="text" class="form-control" placeholder="Address" ng-model="order.address" required />
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+              <label class="control-label">Phone number</label>
+              <div class="controls">
+                <input type="text" class="form-control" placeholder="Phone number" ng-model="order.phone" required />
+              </div>
+            </div>
+          </div>
+        </div>
 
-                <!-- Products panel -->
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Products</h3>
-                    </div>
-                    <div class="panel-body products-panel-body">
+        <!-- Products panel -->
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Products</h3>
+          </div>
+          <div class="panel-body products-panel-body">
 
-                      <!-- Price -->
-                      <div class="col-md-6 col-sm-6">
-                        <h4>Total</h4>
-                        <div class="input-group price">
-                        <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-                        </span>
-                        <input disabled type="number" data-ng-model="order.price" class="form-control pull-right" />
-                      </div>
-                      </div>
-                      
+            <!-- Price -->
+            <div class="col-md-6 col-sm-6">
+              <h4>Total</h4>
+              <div class="input-group price">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                </span>
+                <input disabled type="number" data-ng-model="order.price" class="form-control pull-right" />
+              </div>
+            </div>
 
-                      <!-- Discount -->
-                      <div class="col-md-6 col-sm-6">
-                        <h4>Discount</h4>
-                        <div class="input-group discount">
-                          <input type="number" step="1" min="0" max="100" data-ng-model="order.discount" class="form-control" required ng-change="updatePrice()" />
-                          <span class="input-group-addon">
-                            <span aria-hidden="true">%</span>
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <a class="add-product-btn btn btn-success pull-right" ng-click="addProduct()">
-                          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                      </a>
-                    </div>
-                    <ul class="list-group">
-                        <li ng-repeat="product in products" class="list-group-item">
-                          <div class="col-md-6 col-sm-6">
-                            <select class="form-control"
-                                    data-ng-model="product.product"
-                                    required
-                                    ng-change="updatePrice()"
-                                    ng-options="option as option.name for option in productList">
-                            </select>
-                          </div>
-                          <div class="col-md-6 col-sm-6">
-                            <input class="form-control" type="number" step="1" min="0" required ng-model="product.quantity" ng-change="updatePrice()" />
-                            <a class="btn btn-danger pull-right" ng-click="removeProduct($index)">
-                              <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                            </a>
-                          </div>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Discount -->
+            <div class="col-md-6 col-sm-6">
+              <h4>Discount</h4>
+              <div class="input-group discount">
+                <input type="number" step="1" min="0" max="100" data-ng-model="order.discount" class="form-control" required ng-change="updatePrice()" />
+                <span class="input-group-addon">
+                  <span aria-hidden="true">%</span>
+                </span>
+              </div>
+            </div>
+                    
+            <a class="add-product-btn btn btn-success pull-right" ng-click="addProduct()">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </a>
+          </div>
+          <ul class="list-group">
+            <li ng-repeat="product in products" class="list-group-item">
+              <div class="col-md-6 col-sm-6">
+                <select class="form-control"
+                        data-ng-model="product.product"
+                        required
+                        ng-change="updatePrice()"
+                        ng-options="option as option.name for option in productList">
+                </select>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <input class="form-control" type="number" step="1" min="0" required ng-model="product.quantity" ng-change="updatePrice()" />
+                <a class="btn btn-danger pull-right" ng-click="removeProduct($index)">
+                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
 
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default" ng-disabled="!products.length">
-                </div>
-                <div data-ng-show="error" class="text-danger">
-                    <strong data-ng-bind="error"></strong>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-default" ng-disabled="
+              !products.length ||
+              !order.address ||
+              !order.phone ||
+              (!clientSelected && !newClientName)">
+        </div>
+        <alert data-ng-show="error" type="danger" close="closeAlert()">{{error}}</alert>
+      </fieldset>
+    </form>
+  </div>
 </section>

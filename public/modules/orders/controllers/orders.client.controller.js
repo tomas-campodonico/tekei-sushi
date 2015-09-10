@@ -16,6 +16,7 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 		$scope.newClientName = '';
 		$scope.validName = true;
 		$scope.clientSelected = null;
+		$scope.notDeliveredFilter = true;
 
 		// Fetch client's and product's info
 		$scope.fetchClientsAndProducts = function() {
@@ -32,7 +33,9 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 
 		// Check if there is a client with the given name and surname
 		$scope.validateClientName = function() {
-			$scope.validName = !_.findWhere($scope.clients, {
+			var names = $scope.newClientName.split(' ');
+
+			$scope.validName = names.length >= 2 && !_.findWhere($scope.clients, {
 				fullname: $scope.newClientName
 			});
 		};
@@ -47,8 +50,8 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 					$scope.order.address = $scope.clientSelected.address;
 					$scope.order.phone = $scope.clientSelected.phone;
 				});
-
-
+			} else {
+				this.clientSelected = null;
 			}
 		};
 
@@ -58,7 +61,7 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 			var order = this.order;
 			order.client = this.client || 0;
 			order.clientName = this.newClientName;
-			order.products = this.cleanUpProducts();
+			order.products = this.products;
 			order.deliveryDate = angular.element(document.getElementById('datetimepicker')).data('DateTimePicker').date().format();
 
 			// Redirect after save
@@ -105,7 +108,9 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 			$scope.clients = Clients.query();
 			$scope.orders = Orders.query(function() {
 				_.forEach($scope.orders, function(order) {
-					order.client = _.findWhere($scope.clients, {id: order.client});
+					order.client = _.findWhere($scope.clients, {
+						id: order.client
+					});
 				});
 			});
 		};
@@ -142,15 +147,6 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 			$scope.order.price = price - (price * $scope.order.discount / 100);
 		};
 
-		// Return the array of products ready to be saved
-		$scope.cleanUpProducts = function() {
-			for (var i = 0; i < this.products.length; i++) {
-				this.products[i].product = this.products[i].product._id;
-			}
-
-			return this.products;
-		};
-
 		// Open the modal to search a client
 		$scope.openModal = function() {
 			var modalInstance = $modal.open({
@@ -173,6 +169,32 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 
 		$scope.showOrder = function(id) {
 			$location.path('/orders/' + id);
+		};
+
+		$scope.changeStatus = function(id, code, $event) {
+			var order = _.findWhere($scope.orders, {
+				_id: id
+			});
+			var clientObj = order.client;
+
+			if (code === 1) {
+				order.delivered = !order.delivered;
+			} else {
+				order.cancelled = !order.cancelled;
+				order.delivered = false;
+			}
+
+			order.client = order.client._id;
+			order.$update(function() {
+				order.client = clientObj;
+			});
+
+			$event.stopPropagation();
+			$event.preventDefault();
+		};
+
+		$scope.closeAlert = function() {
+			$scope.error = null;
 		};
 	}
 ]);
