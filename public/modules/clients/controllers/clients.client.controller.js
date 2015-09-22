@@ -64,7 +64,6 @@ angular.module('clients').controller('ClientsController', ['$scope', '$statePara
 			$scope.client = Clients.get({ 
 				clientId: $stateParams.clientId
 			});
-			console.log($scope.client);
 		};
 
 		// Show a new client

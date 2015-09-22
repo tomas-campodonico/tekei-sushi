@@ -22,7 +22,10 @@ var ProductSchema = new Schema({
 		required: 'Please fill the product\'s price'
 	},
 	ingredients: [{
-		ingredient: String,
+		ingredient: {
+			type: Schema.ObjectId,
+			ref: 'Ingredient'
+		},
 		quantity: Number
 	}]
 });

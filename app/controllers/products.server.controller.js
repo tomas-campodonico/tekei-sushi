@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Product = mongoose.model('Product'),
+	Ingredient = mongoose.model('Ingredient'),
 	_ = require('lodash');
 
 /**
@@ -37,9 +38,9 @@ exports.read = function(req, res) {
  * Update a Product
  */
 exports.update = function(req, res) {
-	var product = req.product ;
+	var product = req.product;
 
-	product = _.extend(product , req.body);
+	product = _.extend(product, req.body);
 
 	product.save(function(err) {
 		if (err) {
@@ -56,7 +57,7 @@ exports.update = function(req, res) {
  * Delete an Product
  */
 exports.delete = function(req, res) {
-	var product = req.product ;
+	var product = req.product;
 
 	product.remove(function(err) {
 		if (err) {
@@ -72,7 +73,7 @@ exports.delete = function(req, res) {
 /**
  * List of Products
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
 	Product.find().sort('-created').populate('user', 'displayName').exec(function(err, products) {
 		if (err) {
 			return res.status(400).send({
@@ -87,11 +88,12 @@ exports.list = function(req, res) {
 /**
  * Product middleware
  */
-exports.productByID = function(req, res, next, id) { 
-	Product.findById(id).populate('user', 'displayName').exec(function(err, product) {
+exports.productByID = function(req, res, next, id) {
+	Product.findById(id).populate('ingredients.ingredient').exec(function(err, product) {
+
 		if (err) return next(err);
-		if (! product) return next(new Error('Failed to load Product ' + id));
-		req.product = product ;
+		if (!product) return next(new Error('Failed to load Product ' + id));
+		req.product = product;
 		next();
 	});
 };

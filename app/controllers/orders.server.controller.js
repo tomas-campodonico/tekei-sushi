@@ -7,7 +7,35 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Order = mongoose.model('Order'),
 	Client = mongoose.model('Client'),
+	Product = mongoose.model('Product'),
+	Ingredient = mongoose.model('Ingredient'),
 	_ = require('lodash');
+
+/*
+ * Updates the stock of each ingredient of the order
+ */
+var updateStock = function(order, increase) {
+	_.forEach(order.products, function(product) {
+		Product.findById(product.product).exec(function(err, prod) {
+			if (err) throw err;
+
+			_.forEach(prod.ingredients, function(ingredient) {
+				Ingredient.findById(ingredient.ingredient).exec(function(err, ingred) {
+					if (err) throw err;
+
+					if (increase) {
+						ingred.quantity = ingred.quantity + (ingredient.quantity * product.quantity);
+					} else {
+						ingred.quantity = ingred.quantity - (ingredient.quantity * product.quantity);
+						if (ingred.quantity < 0) ingred.quantity = 0;
+					}
+
+					ingred.save();
+				});
+			});
+		});
+	});
+};
 
 /**
  * Create a Order
@@ -78,6 +106,12 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var order = req.order;
+
+	if (!req.order.delivered && req.body.delivered) {
+		updateStock(req.body);
+	} else if (req.order.delivered && !req.body.delivered) {
+		updateStock(req.body, true);
+	}
 
 	order = _.extend(order, req.body);
 

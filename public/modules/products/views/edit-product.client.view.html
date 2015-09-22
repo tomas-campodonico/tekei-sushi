@@ -1,4 +1,4 @@
-<section data-ng-controller="ProductsController" data-ng-init="findOne()">
+<section data-ng-controller="ProductsController" data-ng-init="findOne(); fetchIngredients();">
     <div class="page-header">
         <h1>Edit Product</h1>
     </div>
@@ -11,6 +11,28 @@
                         <input type="text" data-ng-model="product.name" id="name" class="form-control" placeholder="Name" required>
                     </div>
                 </div>
+                <h3>Ingredients</h3>
+                <a class="btn btn-success pull-right" ng-click="addIngredient()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </a>
+                <table class="table hover-table">
+                    <tbody>
+                        <tr ng-repeat="ingredient in product.ingredients">
+                            <td>
+                                <select 
+                                    data-ng-model="ingredient.ingredient"
+                                    ng-options="ingr.name for ingr in ingredientsList track by ingr.id">
+                                </select>
+                            </td>
+                            <td>{{ingredient.quantity}}{{ingredient.ingredient.unit}}</td>
+                            <td>
+                                <a class="btn btn-danger pull-right" ng-click="removeIngredient($index)">
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-default">
                 </div>

@@ -11,13 +11,13 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 		var sumIngredients = function(ingrs) {
 			var ingredients = {};
 			var result = [];
-			for (var i=0; i < ingrs.length; i++) {
-				if (ingredients[ingrs[i].ingredient.name]) {
-					ingredients[ingrs[i].ingredient.name].quantity += ingrs[i].quantity;
+			for (var i = 0; i < ingrs.length; i++) {
+				if (ingredients[ingrs[i].ingredient._id]) {
+					ingredients[ingrs[i].ingredient._id].quantity += ingrs[i].quantity;
 				} else {
-					ingredients[ingrs[i].ingredient.name] = {
+					ingredients[ingrs[i].ingredient._id] = {
 						quantity: ingrs[i].quantity,
-						ingredient: ingrs[i].ingredient.name
+						ingredient: ingrs[i].ingredient._id
 					};
 				}
 			}
@@ -36,7 +36,7 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 		// Create new Product
 		$scope.create = function() {
 			// Create new Product object
-			var product = new Products ({
+			var product = new Products({
 				name: this.name,
 				price: this.price,
 				ingredients: sumIngredients(this.ingredients)
@@ -55,11 +55,11 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 
 		// Remove existing Product
 		$scope.remove = function(product) {
-			if ( product ) { 
+			if (product) {
 				product.$remove();
 
 				for (var i in $scope.products) {
-					if ($scope.products [i] === product) {
+					if ($scope.products[i] === product) {
 						$scope.products.splice(i, 1);
 					}
 				}
@@ -88,7 +88,7 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 
 		// Find existing Product
 		$scope.findOne = function() {
-			$scope.product = Products.get({ 
+			$scope.product = Products.get({
 				productId: $stateParams.productId
 			});
 		};
@@ -99,7 +99,7 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 
 		// Add a new ingredient to the product
 		$scope.addIngredient = function() {
-			this.ingredients.push({
+			this.product.ingredients.push({
 				ingredient: this.ingredientsList[0],
 				quantity: 0
 			});
@@ -107,7 +107,7 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 
 		// Remove ingredient at a position
 		$scope.removeIngredient = function(index) {
-			this.ingredients.splice(index, 1);
+			this.product.ingredients.splice(index, 1);
 		};
 	}
 ]);

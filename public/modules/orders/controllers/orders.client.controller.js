@@ -120,6 +120,21 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 			$scope.order = Orders.get({
 				orderId: $stateParams.orderId
 			});
+
+			$scope.order.$promise.then(function() {
+
+				//get products
+				$scope.products = [];
+				$scope.order.products.forEach(function(prod) {
+					$scope.products.push({
+						product: Products.get({productId: prod.product}),
+						quantity: prod.quantity
+					});
+				});
+				$scope.client = Clients.get({
+					clientId: $scope.order.client
+				});
+			});
 		};
 
 		// Add a new empty product to the order
