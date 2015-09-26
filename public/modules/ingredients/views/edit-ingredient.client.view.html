@@ -17,18 +17,15 @@
                         <div class="input-group">
                             <input type="number" data-ng-model="ingredient.quantity" id="quantity" class="form-control" placeholder="Quantity" required>
                             <div class="input-group-btn">
-                                <select class="form-control" data-ng-model="ingredient.unit">
-                                    <option selected="selected">Gr.</option>
-                                    <option>Kg.</option>
-                                    <option>Units</option>
-                                    <option>Lts.</option>
+                                <select class="form-control" data-ng-model="ingredient.unit" ng-options="unit as unit.title for unit in units track by unit.value">
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default">
+                <div class="form-group text-center">
+                    <input type="submit" value="Update" class="btn btn-primary" ng-disabled="!ingredient.quantity || !ingredient.unit || !ingredient.name">
+                    <a href="/#!/ingredients/{{ingredient._id}}" class="btn btn-danger">Cancel</a>
                 </div>
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>

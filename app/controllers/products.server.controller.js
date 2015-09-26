@@ -13,8 +13,11 @@ var mongoose = require('mongoose'),
  * Create a Product
  */
 exports.create = function(req, res) {
+	
+	req.body.ingredients.forEach(function(ingr) {
+		ingr.ingredient = ingr.ingredient._id;
+	});
 	var product = new Product(req.body);
-	product.user = req.user;
 
 	product.save(function(err) {
 		if (err) {
@@ -39,8 +42,11 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var product = req.product;
-
 	product = _.extend(product, req.body);
+
+	product.ingredients.forEach(function(ingr) {
+		ingr.ingredient = ingr.ingredient._id;
+	});
 
 	product.save(function(err) {
 		if (err) {

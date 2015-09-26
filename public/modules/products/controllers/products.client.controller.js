@@ -9,24 +9,31 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 		$scope.ingredients = [];
 
 		var sumIngredients = function(ingrs) {
-			var ingredients = {};
-			var result = [];
-			for (var i = 0; i < ingrs.length; i++) {
-				if (ingredients[ingrs[i].ingredient._id]) {
-					ingredients[ingrs[i].ingredient._id].quantity += ingrs[i].quantity;
+			var ingredientsObj = {};
+
+			// Sum quantities of the same ingredients
+			_.forEach(ingrs, function(ingredient) {
+				var ingredientId = ingredient.ingredient._id;
+
+				if (ingredientsObj[ingredientId]) {
+					ingredientsObj[ingredientId].quantity += ingredient.quantity;
 				} else {
-					ingredients[ingrs[i].ingredient._id] = {
-						quantity: ingrs[i].quantity,
-						ingredient: ingrs[i].ingredient._id
-					};
+					ingredientsObj[ingredientId] = ingredient;
 				}
-			}
+			});
 
-			for (var ing in ingredients) {
-				result.push(ingredients[ing]);
-			}
+			return _.map(ingredientsObj, function(ingr) {
+				return ingr;
+			});
 
-			return result;
+		};
+
+		$scope.createEmpty = function() {
+			$scope.product = new Products({
+				ingredients: []
+			});
+
+			$scope.noMoreIngredients = false;
 		};
 
 		$scope.fetchIngredients = function() {
@@ -35,19 +42,11 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 
 		// Create new Product
 		$scope.create = function() {
-			// Create new Product object
-			var product = new Products({
-				name: this.name,
-				price: this.price,
-				ingredients: sumIngredients(this.ingredients)
-			});
+			$scope.product.ingredients = sumIngredients($scope.product.ingredients);
 
 			// Redirect after save
-			product.$save(function(response) {
+			$scope.product.$save(function(response) {
 				$location.path('products/' + response._id);
-
-				// Clear form fields
-				$scope.name = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -72,6 +71,7 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 
 		// Update existing Product
 		$scope.update = function() {
+			$scope.product.ingredients = sumIngredients($scope.product.ingredients);
 			var product = $scope.product;
 
 			product.$update(function() {
@@ -91,6 +91,12 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 			$scope.product = Products.get({
 				productId: $stateParams.productId
 			});
+
+			$scope.product.$promise.then(function() {
+				if (!$scope.getFirstIngredient()) {
+					$scope.noMoreIngredients = true;
+				}
+			});
 		};
 
 		$scope.showProduct = function(id) {
@@ -99,15 +105,28 @@ angular.module('products').controller('ProductsController', ['$scope', '$statePa
 
 		// Add a new ingredient to the product
 		$scope.addIngredient = function() {
-			this.product.ingredients.push({
-				ingredient: this.ingredientsList[0],
+			$scope.product.ingredients.push({
+				ingredient: this.getFirstIngredient(),
 				quantity: 0
+			});
+
+			if (!this.getFirstIngredient()) {
+				$scope.noMoreIngredients = true;
+			}
+		};
+
+		$scope.getFirstIngredient = function() {
+			return _.find(this.ingredientsList, function(ingr) {
+				return !_.find($scope.product.ingredients, function(ing) {
+					return ing.ingredient.name === ingr.name;
+				});
 			});
 		};
 
 		// Remove ingredient at a position
 		$scope.removeIngredient = function(index) {
 			this.product.ingredients.splice(index, 1);
+			$scope.noMoreIngredients = false;
 		};
 	}
 ]);

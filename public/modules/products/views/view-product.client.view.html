@@ -16,7 +16,7 @@
 			<tbody>
 				<tr data-ng-repeat="ingredient in product.ingredients">
 					<td data-ng-bind="ingredient.ingredient.name"></td>
-					<td>{{ingredient.quantity}}{{ingredient.ingredient.unit}}</td>
+					<td>{{ingredient.quantity}}{{ingredient.ingredient.unit.title}}</td>
 				</tr>
 			</tbody>
 		</table>

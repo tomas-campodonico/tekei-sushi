@@ -5,17 +5,20 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 	function($scope, $stateParams, $location, $modal, Authentication, Orders, Products, Clients) {
 		$scope.authentication = Authentication;
 
-		$scope.order = new Orders({
-			delivered: false,
-			date: new Date(),
-			deliveryDate: moment(new Date()).format('DD/MM/YYYY hh:mm a'),
-			discount: 0,
-			price: 0
-		});
-		$scope.products = [];
-		$scope.newClientName = '';
-		$scope.validName = true;
-		$scope.clientSelected = null;
+		$scope.createEmpty = function() {
+			$scope.order = new Orders({
+				delivered: false,
+				date: new Date(),
+				deliveryDate: moment(new Date()).format('DD/MM/YYYY hh:mm a'),
+				discount: 0,
+				price: 0
+			});
+			$scope.products = [];
+			$scope.newClientName = '';
+			$scope.validName = true;
+			$scope.clientSelected = null;
+		};
+
 		$scope.notDeliveredFilter = true;
 
 		// Fetch client's and product's info
@@ -119,21 +122,6 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 		$scope.findOne = function() {
 			$scope.order = Orders.get({
 				orderId: $stateParams.orderId
-			});
-
-			$scope.order.$promise.then(function() {
-
-				//get products
-				$scope.products = [];
-				$scope.order.products.forEach(function(prod) {
-					$scope.products.push({
-						product: Products.get({productId: prod.product}),
-						quantity: prod.quantity
-					});
-				});
-				$scope.client = Clients.get({
-					clientId: $scope.order.client
-				});
 			});
 		};
 

@@ -5,23 +5,38 @@ angular.module('ingredients').controller('IngredientsController', ['$scope', '$s
 	function($scope, $stateParams, $location, Authentication, Ingredients) {
 		$scope.authentication = Authentication;
 
+		$scope.units = [{
+			value: 'gr',
+			title: 'Gr.'
+		}, {
+			value: 'kg',
+			title: 'Kg.'
+		}, {
+			value: 'units',
+			title: 'Units'
+		}, {
+			value: 'lts',
+			title: 'Lts'
+		}];
+
 		// Create new Ingredient
 		$scope.create = function() {
-			// Create new Ingredient object
-			var ingredient = new Ingredients ({
-				name: this.name,
-				quantity: this.quantity,
-				unit: this.unit
-			});
+			var ingredient = $scope.ingredient;
 
 			// Redirect after save
 			ingredient.$save(function(response) {
 				$location.path('ingredients/' + response._id);
-
-				// Clear form fields
-				$scope.name = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Create new Ingredient object
+		$scope.initCreate = function() {
+			$scope.ingredient = new Ingredients ({
+				name: '',
+				quantity: 0,
+				unit: $scope.units[0]
 			});
 		};
 

@@ -20,3 +20,12 @@
 	text-align: right;
 	margin: 20px 0 10px;
 }
+
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+	.view-ingredients-form {
+		top: 20px;
+	}
+}
+
+

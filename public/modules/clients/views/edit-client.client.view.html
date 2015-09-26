@@ -29,8 +29,9 @@
                         <input type="text" data-ng-model="client.phone" id="phone" class="form-control" placeholder="Phone number">
                     </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default">
+                <div class="form-group text-center">
+                    <input type="submit" value="Update" class="btn btn-primary" ng-disabled="!client.name || !client.surname">
+                    <a href="/#!/clients/{{client._id}}" class="btn btn-danger">Cancel</a>
                 </div>
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>

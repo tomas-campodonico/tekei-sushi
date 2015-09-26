@@ -21,15 +21,22 @@ var IngredientSchema = new Schema({
 		default: 0
 	},
 	unit: {
-		type: String,
-		default: 'gr'
+		value: {
+			type: String,
+			default: 'gr'
+		},
+		title: {
+			type: String,
+			default: 'Gr.'
+		}
+		
 	}
 });
 
 IngredientSchema.index({name: 1}, {unique: true});
 
 IngredientSchema.virtual('amount').get(function () {
-  return this.quantity + this.unit;
+  return this.quantity + this.unit.title;
 });
 
 IngredientSchema.set('toJSON', {virtuals: true});

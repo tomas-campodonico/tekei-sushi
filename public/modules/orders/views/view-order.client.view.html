@@ -1,6 +1,10 @@
 <section data-ng-controller="OrdersController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1>Order for {{client.fullname}}</h1>
+		<h2>
+			Order for <a href="/#!/clients/{{order.client._id}}">{{order.client.fullname}}</a>
+			<span class="label label-danger pull-right" ng-show="order.cancelled">Cancelled</span>
+			<span class="label label-success pull-right" ng-show="order.delivered">Delivered</span>
+		</h2>
 	</div>
 	<div class="pull-right">
 		<a class="btn btn-primary" href="/#!/orders/{{order._id}}/edit">
@@ -11,15 +15,44 @@
 		</a>
 	</div>
 
+	<h4 class="hidden-xs">To be delivered: <span class="text-danger">{{order.deliveryDate | date: 'dd-MM-yyyy (HH:mm)'}}</span></h4>
+	<h4 class="hidden-xs">Created: <span class="text-success">{{order.price | date: 'dd-MM-yyyy (HH:mm)'}}</span></h4>
+	
+	<div class="datetime-container">
+		<div class="date-container visible-xs-inline-block">
+			<div class="date">
+				<span class="binds"></span>
+				<span class="month">{{order.deliveryDate | date: 'MMM'}}</span>
+				<h1 class="day">{{order.deliveryDate | date: 'dd'}}</h1>
+			</div>
+			<h5 class="text-danger text-center">Delivery date</h5>
+		</div>
+
+		<div class="time-container visible-xs-inline-block">
+			<div class="clock-container">
+				<div class="clock">
+			    	<div class="hour"></div>
+			    	<div class="minute"></div>
+				</div>
+			</div>
+			<h3 class="text-center">{{order.deliveryDate | date: 'HH:mm'}}</h3>
+			<h5 class="text-danger text-center">Delivery time</h5>
+		</div>
+	</div>
+
+	<hr>
+
+	<h4>Total: <span class="label label-success">${{order.price}}</span></h4>
+
 	<table class="table table-responsive table-hover">
 		<thead>
 			<th>Product</th>
 			<th>Quantity</th>
 		</thead>
 		<tbody>
-			<tr data-ng-repeat="product in products">
-				<td>{{product.name}}</td>
-				<td>{{product.quantity}}</td>
+			<tr data-ng-repeat="product in order.products">
+				<td>{{product.product.name}}</td>
+				<td>{{product.quantity}} pieces</td>
 			</tr>
 		</tbody>
 	</table>

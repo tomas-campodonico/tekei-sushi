@@ -1,4 +1,4 @@
-<section data-ng-controller="OrdersController" ng-init="fetchClientsAndProducts()">
+<section data-ng-controller="OrdersController" ng-init="createEmpty(); fetchClientsAndProducts()">
 
   <!-- Modal -->
   <script type="text/ng-template" id="myModalContent.html">
@@ -61,22 +61,18 @@
                   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </a>
               </div>
-              <div ng-show="!clientSelected" class="client-name-input form-group has-feedback" ng-class="{'has-success' : newClientName.length && validName, 'has-error': !newClientName.length || !validName}">
+              <div ng-show="!clientSelected" class="client-name-input form-group" ng-class="{'has-success' : newClientName.length && validName, 'has-error': !newClientName.length || !validName}">
                 <label class="control-label">Name and surname (both are mandatory)</label>
                 <input type="text" placeholder="Client name" class="form-control" ng-model="newClientName" ng-change="validateClientName()">
-                <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="newClientName.length > 0 && validName" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="newClientName.length === 0 || !validName" aria-hidden="true"></span>
               </div>
             </div>
             <div class="col-md-6 col-sm-6">
               <label class="control-label">Date</label>
-              <div class="form-group">
-                <div class="input-group date" id="datetimepicker">
-                  <input ng-model="order.deliveryDate" type="text" class="form-control" />
-                  <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-                </div>
+              <div class="input-group date" id="datetimepicker">
+                <input ng-model="order.deliveryDate" type="text" class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
               </div>
             </div>
             <div class="col-md-12 col-sm-12">
@@ -147,12 +143,13 @@
           </ul>
         </div>
 
-        <div class="form-group">
-          <input type="submit" class="btn btn-default" ng-disabled="
+        <div class="form-group text-center">
+          <input type="submit" class="btn btn-primary" ng-disabled="
               !products.length ||
               !order.address ||
               !order.phone ||
               (!clientSelected && !newClientName)">
+          <a href="/#!/orders" class="btn btn-danger">Cancel</a>
         </div>
         <alert data-ng-show="error" type="danger" close="closeAlert()">{{error}}</alert>
       </fieldset>

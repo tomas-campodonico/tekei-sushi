@@ -63,3 +63,7 @@
     left: 40px;
     z-index: 1000;
 }
+
+table.table tbody tr td {
+    vertical-align: middle;
+}

@@ -162,7 +162,7 @@ exports.list = function(req, res) {
  * Order middleware
  */
 exports.orderByID = function(req, res, next, id) {
-	Order.findById(id).populate('user', 'displayName').exec(function(err, order) {
+	Order.findById(id).populate('products.product').populate('client').exec(function(err, order) {
 		if (err) return next(err);
 		if (!order) return next(new Error('Failed to load Order ' + id));
 		req.order = order;
