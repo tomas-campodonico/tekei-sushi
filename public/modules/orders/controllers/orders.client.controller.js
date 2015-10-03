@@ -8,15 +8,15 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 		$scope.createEmpty = function() {
 			$scope.order = new Orders({
 				delivered: false,
-				date: new Date(),
 				deliveryDate: moment(new Date()).format('DD/MM/YYYY hh:mm a'),
 				discount: 0,
-				price: 0
+				price: 0,
+				created: new Date(),
+				products: []
 			});
-			$scope.products = [];
+
 			$scope.newClientName = '';
 			$scope.validName = true;
-			$scope.clientSelected = null;
 		};
 
 		$scope.notDeliveredFilter = true;
@@ -45,16 +45,10 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 
 		// Select client
 		$scope.selectClient = function() {
-			if (this.client) {
-				this.clientSelected = Clients.get({
-					clientId: this.client
-				}, function() {
-					//update address and phone
-					$scope.order.address = $scope.clientSelected.address;
-					$scope.order.phone = $scope.clientSelected.phone;
-				});
-			} else {
-				this.clientSelected = null;
+			if (this.order.client) {
+				//update address and phone
+				$scope.order.address = $scope.order.client.address;
+				$scope.order.phone = $scope.order.client.phone;
 			}
 		};
 
@@ -62,17 +56,13 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 		$scope.create = function() {
 			// Create new Order object
 			var order = this.order;
-			order.client = this.client || 0;
+			order.client = this.order.client || 0;
 			order.clientName = this.newClientName;
-			order.products = this.products;
 			order.deliveryDate = angular.element(document.getElementById('datetimepicker')).data('DateTimePicker').date().format();
 
 			// Redirect after save
 			order.$save(function(response) {
 				$location.path('orders/' + response._id);
-
-				// Clear form fields
-				$scope.name = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -108,14 +98,7 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 
 		// Find a list of Orders
 		$scope.find = function() {
-			$scope.clients = Clients.query();
-			$scope.orders = Orders.query(function() {
-				_.forEach($scope.orders, function(order) {
-					order.client = _.findWhere($scope.clients, {
-						id: order.client
-					});
-				});
-			});
+			$scope.orders = Orders.query();
 		};
 
 		// Find existing Order
@@ -127,7 +110,7 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 
 		// Add a new empty product to the order
 		$scope.addProduct = function() {
-			this.products.push({
+			$scope.order.products.push({
 				product: this.productList[0],
 				quantity: 0
 			});
@@ -135,17 +118,15 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 
 		// Remove product from the order
 		$scope.removeProduct = function(index) {
-			this.products.splice(index, 1);
+			this.order.products.splice(index, 1);
 			this.updatePrice();
 		};
 
 		// Update total price based on products and discount
 		$scope.updatePrice = function() {
-			var price = 0;
-
-			for (var i = 0; i < this.products.length; i++) {
-				price += (this.products[i].product.price * this.products[i].quantity);
-			}
+			var price = this.order.products.reduce(function(prev, product) {
+				return prev + product.product.price * product.quantity;
+			}, 0);
 
 			$scope.order.price = price - (price * $scope.order.discount / 100);
 		};
@@ -165,7 +146,7 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 			});
 
 			modalInstance.result.then(function(selectedItem) {
-				$scope.client = selectedItem.id;
+				$scope.order.client = selectedItem;
 				$scope.selectClient();
 			});
 		};
@@ -203,7 +184,6 @@ angular.module('orders').controller('OrdersController', ['$scope', '$stateParams
 ]);
 
 angular.module('orders').controller('ModalInstanceCtrl', function($scope, $modalInstance, clients) {
-
 	$scope.clients = clients;
 	$scope.phoneFilter = '';
 	$scope.selected = {

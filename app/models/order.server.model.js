@@ -31,7 +31,7 @@ var OrderSchema = new Schema({
 	}],
 	created: {
 		type: Date,
-		default: Date.now
+		default: new Date()
 	},
 	deliveryDate: {
 		type: Date,

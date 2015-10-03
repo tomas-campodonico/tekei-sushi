@@ -1,47 +1,137 @@
-<section data-ng-controller="OrdersController" data-ng-init="findOne()">
-    <div class="page-header">
-        <h2>Order for {{order.client.fullname}}</h2>
-    </div>
+<section data-ng-controller="OrdersController" data-ng-init="findOne(); fetchClientsAndProducts();">
+  <div class="page-header">
+    <h2>Order for {{order.client.fullname}}</h2>
+  </div>
+  <div class="col-md-12">
+    <form class="form-horizontal" data-ng-submit="update()" novalidate>
+      <fieldset class="row edit-order">
+        <!-- Status panel -->
+        <div class="order-status-panel panel panel-primary col-sm-5 col-xs-12">
+          <div class="panel-heading">
+            <h3 class="panel-title">Status</h3>
+          </div>
+          <div class="panel-body row">
+            <div class="switch col-md-6 col-sm-6 col-xs-12 col-lg-6 text-center">
+              <h3 class="text-danger">Cancelled</h3>
+              <input type="checkbox" class="toggle toggle-round" id="toggle1">
+              <label for="toggle1"></label>
+            </div>
+            <div class="switch col-md-6 col-sm-6 col-xs-12 col-lg-6 text-center">
+              <h3 class="text-success">Delivered</h3>
+              <input type="checkbox" class="toggle toggle-round" id="toggle2">
+              <label for="toggle2"></label>
+            </div>
+          </div>
+        </div>
+        <!-- End status panel -->
+        
+        <!-- Client panel -->
+        <div class="order-client-panel panel panel-primary col-sm-5 col-xs-12 col-sm-offset-2">
+          <div class="panel-heading">
+            <h3 class="panel-title">Client</h3>
+          </div>
+          <div class="panel-body row">
+            <label class="control-label" for="name">Name</label>
+            <select class="client-dropdown form-control" ng-model="order.client" ng-options="client.fullname for client in clients track by client.id">
+              <option value="">No Client</option>
+            </select>
+          </div>
+        </div>
+        <!-- End Client panel -->
 
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="update()" novalidate>
-            <fieldset>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Status</h3>
-                    </div>
+        <!-- Other info panel -->
+        <div class="panel panel-default col-xs-12">
+          <div class="panel-heading">
+            <h3 class="panel-title">Address, phone and date</h3>
+          </div>
+          <div class="panel-body">
+            <div class="col-md-12 col-sm-12">
+              <label class="control-label">Date</label>
+              <div class="input-group date" id="datetimepicker">
+                <input ng-model="order.deliveryDate" type="text" class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+              <label class="control-label">Address</label>
+              <div class="controls">
+                <input type="text" class="form-control" placeholder="Address" ng-model="order.address" required />
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+              <label class="control-label">Phone number</label>
+              <div class="controls">
+                <input type="text" class="form-control" placeholder="Phone number" ng-model="order.phone" required />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Other info panel -->
+        
+        <!-- Products panel -->
+        <div class="panel panel-info col-xs-12">
+          <div class="panel-heading">
+            <h3 class="panel-title">Products</h3>
+          </div>
+          <div class="panel-body products-panel-body">
+            <!-- Price -->
+            <div class="col-md-6 col-sm-6">
+              <h4>Total</h4>
+              <div class="input-group price">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                </span>
+                <input disabled type="number" data-ng-model="order.price" class="form-control pull-right" />
+              </div>
+            </div>
+            <!-- Discount -->
+            <div class="col-md-6 col-sm-6">
+              <h4>Discount</h4>
+              <div class="input-group discount">
+                <input type="number" step="1" min="0" max="100" data-ng-model="order.discount" class="form-control" required ng-change="updatePrice()" />
+                <span class="input-group-addon">
+                  <span aria-hidden="true">%</span>
+                </span>
+              </div>
+            </div>
+            
+            <a class="add-product-btn btn btn-success pull-right" ng-click="addProduct()">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </a>
+          </div>
+          <ul class="list-group">
+            <li ng-repeat="product in order.products" class="list-group-item">
+              <div class="col-md-6 col-sm-6">
+                <select class="form-control"
+                  data-ng-model="product.product"
+                  required
+                  ng-change="updatePrice()"
+                  ng-options="prod as prod.name for prod in productList track by prod._id">
+                </select>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <input class="form-control" type="number" step="1" min="0" required ng-model="product.quantity" ng-change="updatePrice()" />
+                <a class="btn btn-danger pull-right" ng-click="removeProduct($index)">
+                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- End Products panel -->
 
-                    <div class="panel-body row">
-                        <div class="switch col-md-6 col-sm-6 col-xs-12 col-lg-6 text-center">
-                            <h2 class="text-danger">Cancelled</h2>
-                            <input type="checkbox" class="toggle toggle-round" id="toggle1">
-                            <label for="toggle1"></label>
-                        </div>
-                        <div class="switch col-md-6 col-sm-6 col-xs-12 col-lg-6 text-center">
-                            <h2 class="text-success">Delivered</h2>
-                            <input type="checkbox" class="toggle toggle-round" id="toggle2">
-                            <label for="toggle2"></label>
-                        </div>
-                    </div>
-                </div>
-                
-                
-
-                <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="order.name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default">
-                    <input type="button" value="Delete" class="btn btn-danger" data-ng-click="remove();">
-                </div>
-                
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-            </fieldset>
-        </form>
-    </div>
+        <!-- Update & cancel buttons -->
+        <div class="form-group text-center">
+          <input type="submit" value="Update" class="btn btn-default">
+          <a href="/#!/orders/{{order._id}}" class="btn btn-danger">Cancel</a>
+        </div>
+        
+        <div data-ng-show="error" class="text-danger">
+          <strong data-ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 </section>

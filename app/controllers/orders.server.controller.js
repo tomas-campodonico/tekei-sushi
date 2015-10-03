@@ -42,9 +42,9 @@ var updateStock = function(order, increase) {
  */
 exports.create = function(req, res) {
 	//Keep only products id
-	for (var i = 0; i < req.body.products.length; i++) {
-		req.body.products[i].product = req.body.products[i].product._id;
-	}
+	req.body.products.forEach(function(product) {
+		product.product = product.product._id;
+	});
 
 	if (req.body.client === 0 && req.body.clientName) {
 		// Create new client
@@ -80,6 +80,7 @@ exports.create = function(req, res) {
 			}
 		});
 	} else {
+		req.body.client = req.body.client._id;
 		var order = new Order(req.body);
 
 		order.save(function(err) {
@@ -147,7 +148,7 @@ exports.delete = function(req, res) {
  * List of Orders
  */
 exports.list = function(req, res) {
-	Order.find().sort('-created').populate('user', 'displayName').exec(function(err, orders) {
+	Order.find().sort('-created').populate('client').exec(function(err, orders) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

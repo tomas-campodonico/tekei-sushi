@@ -67,3 +67,20 @@
 table.table tbody tr td {
     vertical-align: middle;
 }
+
+.edit-order .panel {
+	padding: 0;
+}
+
+.order-status-panel .panel-body, .order-client-panel .panel-body {
+	min-height: 105px;
+	padding: 10px 30px;
+}
+
+.order-client-panel .panel-body {
+	line-height: 65px;
+}
+
+.order-status-panel h3 {
+	margin-top: 0;
+}
