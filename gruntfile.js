@@ -49,11 +49,11 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		shell: {
+		/*shell: {
         	mongo: {
             	command: 'start mongod'
         	}
-        },
+        },*/
 		jshint: {
 			all: {
 				src: watchFiles.clientJS.concat(watchFiles.serverJS),
