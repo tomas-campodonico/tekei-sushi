@@ -3,6 +3,7 @@
   "description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js",
   "version": "0.0.1",
   "author": "Tomas Campodonico",
+  "main": "main.js",
   "engines": {
     "node": "0.10.x",
     "npm": "1.4.x"
@@ -43,6 +44,9 @@
     "swig": "~1.4.1"
   },
   "devDependencies": {
+    "asar": "^0.8.0",
+    "electron-prebuilt": "^0.33.7",
+    "fs-jetpack": "^0.7.0",
     "grunt-concurrent": "~1.0.0",
     "grunt-contrib-csslint": "^0.3.1",
     "grunt-contrib-cssmin": "~0.10.0",
@@ -63,6 +67,8 @@
     "karma-jasmine": "~0.2.1",
     "karma-phantomjs-launcher": "~0.1.2",
     "load-grunt-tasks": "~1.0.0",
+    "q": "^1.4.1",
+    "rcedit": "^0.3.0",
     "should": "~4.1.0",
     "supertest": "~0.14.0"
   }

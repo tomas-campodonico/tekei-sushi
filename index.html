@@ -1,0 +1,170 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>
+	<title>TekeiSushi - Development Environment</title>
+
+	<!-- General META -->
+	<meta charset="utf-8">
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<!-- Semantic META -->
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+
+	<!-- Facebook META -->
+	<meta property="fb:app_id" content="APP_ID">
+	<meta property="og:site_name" content="TekeiSushi - Development Environment">
+	<meta property="og:title" content="TekeiSushi - Development Environment">
+	<meta property="og:description" content="">
+	<meta property="og:url" content="http://localhost:3000/">
+	<meta property="og:image" content="/img/brand/logo.png">
+	<meta property="og:type" content="website">
+
+	<!-- Twitter META -->
+	<meta name="twitter:title" content="TekeiSushi - Development Environment">
+	<meta name="twitter:description" content="">
+	<meta name="twitter:url" content="http://localhost:3000/">
+	<meta name="twitter:image" content="/img/brand/logo.png">
+
+	<!-- Fav Icon -->
+	<link href="/modules/core/img/brand/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+	<!--Application CSS Files-->
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"><link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css"><link rel="stylesheet" href="lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"><link rel="stylesheet" href="lib/toggle/dist/toggle.css"><link rel="stylesheet" href="modules/clients/css/clients.css"><link rel="stylesheet" href="modules/core/css/core.css"><link rel="stylesheet" href="modules/ingredients/css/ingredients.css"><link rel="stylesheet" href="modules/orders/css/orders.css"><link rel="stylesheet" href="modules/products/css/products.css"><link rel="stylesheet" href="modules/users/css/users.css">
+
+	<!-- HTML5 Shim -->
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body class="">
+	<!-- ngInclude: '/modules/core/views/header.client.view.html' --><header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse ng-scope"><div class="container ng-scope" data-ng-controller="HeaderController">
+	<div class="navbar-header">
+		<button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a href="/#!/orders" class="navbar-brand">TekeiSushi</a>
+	</div>
+	<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation" style="height: 0px;">
+		<ul class="nav navbar-nav">
+			<!-- ngRepeat: item in menu.items | orderBy: 'position' --><li data-ng-repeat="item in menu.items | orderBy: 'position'" ng-switch="item.menuItemType" ui-route="/orders(/create)?" class="dropdown active" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+				<!-- ngSwitchWhen: dropdown --><a ng-switch-when="dropdown" class="dropdown-toggle ng-scope" aria-haspopup="true" aria-expanded="false">
+					<span data-ng-bind="item.title" class="ng-binding">Orders</span>
+					<b class="caret"></b>
+				</a>
+				<!-- ngSwitchWhen: dropdown --><ul ng-switch-when="dropdown" class="dropdown-menu ng-scope">
+					<!-- ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/orders" ng-class="{active: $uiRoute}" class="ng-scope active">
+						<a href="/#!/orders" data-ng-bind="subitem.title" class="ng-binding">List Orders</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/orders/create" ng-class="{active: $uiRoute}" class="ng-scope">
+						<a href="/#!/orders/create" data-ng-bind="subitem.title" class="ng-binding">New Order</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' -->
+				</ul>
+				<!-- ngSwitchDefault:  -->
+			</li><!-- end ngRepeat: item in menu.items | orderBy: 'position' --><li data-ng-repeat="item in menu.items | orderBy: 'position'" ng-switch="item.menuItemType" ui-route="/products(/create)?" class="dropdown" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+				<!-- ngSwitchWhen: dropdown --><a ng-switch-when="dropdown" class="dropdown-toggle ng-scope" aria-haspopup="true" aria-expanded="false">
+					<span data-ng-bind="item.title" class="ng-binding">Products</span>
+					<b class="caret"></b>
+				</a>
+				<!-- ngSwitchWhen: dropdown --><ul ng-switch-when="dropdown" class="dropdown-menu ng-scope">
+					<!-- ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/products" ng-class="{active: $uiRoute}" class="ng-scope">
+						<a href="/#!/products" data-ng-bind="subitem.title" class="ng-binding">List Products</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/products/create" ng-class="{active: $uiRoute}" class="ng-scope">
+						<a href="/#!/products/create" data-ng-bind="subitem.title" class="ng-binding">New Product</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' -->
+				</ul>
+				<!-- ngSwitchDefault:  -->
+			</li><!-- end ngRepeat: item in menu.items | orderBy: 'position' --><li data-ng-repeat="item in menu.items | orderBy: 'position'" ng-switch="item.menuItemType" ui-route="/clients(/create)?" class="dropdown" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+				<!-- ngSwitchWhen: dropdown --><a ng-switch-when="dropdown" class="dropdown-toggle ng-scope" aria-haspopup="true" aria-expanded="false">
+					<span data-ng-bind="item.title" class="ng-binding">Clients</span>
+					<b class="caret"></b>
+				</a>
+				<!-- ngSwitchWhen: dropdown --><ul ng-switch-when="dropdown" class="dropdown-menu ng-scope">
+					<!-- ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/clients" ng-class="{active: $uiRoute}" class="ng-scope">
+						<a href="/#!/clients" data-ng-bind="subitem.title" class="ng-binding">List Clients</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/clients/create" ng-class="{active: $uiRoute}" class="ng-scope">
+						<a href="/#!/clients/create" data-ng-bind="subitem.title" class="ng-binding">New Client</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' -->
+				</ul>
+				<!-- ngSwitchDefault:  -->
+			</li><!-- end ngRepeat: item in menu.items | orderBy: 'position' --><li data-ng-repeat="item in menu.items | orderBy: 'position'" ng-switch="item.menuItemType" ui-route="/ingredients(/create)?" class="dropdown" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+				<!-- ngSwitchWhen: dropdown --><a ng-switch-when="dropdown" class="dropdown-toggle ng-scope" aria-haspopup="true" aria-expanded="false">
+					<span data-ng-bind="item.title" class="ng-binding">Ingredients</span>
+					<b class="caret"></b>
+				</a>
+				<!-- ngSwitchWhen: dropdown --><ul ng-switch-when="dropdown" class="dropdown-menu ng-scope">
+					<!-- ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/ingredients" ng-class="{active: $uiRoute}" class="ng-scope">
+						<a href="/#!/ingredients" data-ng-bind="subitem.title" class="ng-binding">List Ingredients</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' --><li data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="/ingredients/create" ng-class="{active: $uiRoute}" class="ng-scope">
+						<a href="/#!/ingredients/create" data-ng-bind="subitem.title" class="ng-binding">New Ingredient</a>
+					</li><!-- end ngRepeat: subitem in item.items | orderBy: 'position' -->
+				</ul>
+				<!-- ngSwitchDefault:  -->
+			</li><!-- end ngRepeat: item in menu.items | orderBy: 'position' -->
+		</ul>
+	</nav>
+</div>
+</header>
+	<section class="content">
+		<section class="container">
+			
+	<!-- uiView:  --><section data-ui-view="" class="ng-scope"><section data-ng-controller="OrdersController" data-ng-init="find()" class="orders ng-scope">
+    <div class="page-header">
+        <h1>Orders</h1>
+        <a class="btn btn-success pull-right" href="/#!/orders/create">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="input-group ng-hide" ng-hide="!orders.length">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </span>
+        <input placeholder="Search" class="form-control ng-pristine ng-valid" ng-model="searchText">
+    </div>
+
+    <div ng-hide="!orders.length" class="ng-hide">
+        <input type="checkbox" ng-model="notDeliveredFilter" class="ng-pristine ng-valid"> Show only not delivered orders
+    </div>
+    
+    <table id="search-table" class="table table-hover table-responsive clickable-table ng-hide" ng-hide="!orders.length">
+        <thead>
+            <tr><th class="text-center">Client name</th>
+            <th class="text-center">Address</th>
+            <th class="text-center">Delivery Date</th>
+            <th class="text-center hidden-xs">Operations</th>
+        </tr></thead>
+        <tbody>
+            <!-- ngRepeat: order in orders | orderBy:'deliveryDate' | filter:searchText | filter: (notDeliveredFilter || '') && {delivered:false} -->
+        </tbody>
+    </table>
+
+    <div ng-hide="orders.length" class="">
+        There is no order created. <a href="/#!/orders/create">Why don't you create a new one?</a>
+    </div>
+</section>
+</section>
+
+		</section>
+	</section>
+
+	<!--Embedding The User Object-->
+	<script type="text/javascript">
+		var user = "";
+	</script>
+
+	<!--Application JavaScript Files-->
+	<script type="text/javascript" src="lib/moment/moment.js"></script><script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script><script type="text/javascript" src="lib/angular/angular.js"></script><script type="text/javascript" src="lib/angular-resource/angular-resource.js"></script><script type="text/javascript" src="lib/angular-ui-router/release/angular-ui-router.js"></script><script type="text/javascript" src="lib/angular-ui-utils/ui-utils.js"></script><script type="text/javascript" src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script><script type="text/javascript" src="lib/underscore/underscore-min.js"></script><script type="text/javascript" src="lib/angular-moment/angular-moment.js"></script><script type="text/javascript" src="lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script><script type="text/javascript" src="config.js"></script><script type="text/javascript" src="application.js"></script><script type="text/javascript" src="modules/clients/clients.client.module.js"></script><script type="text/javascript" src="modules/core/core.client.module.js"></script><script type="text/javascript" src="modules/ingredients/ingredients.client.module.js"></script><script type="text/javascript" src="modules/orders/orders.client.module.js"></script><script type="text/javascript" src="modules/products/products.client.module.js"></script><script type="text/javascript" src="modules/users/users.client.module.js"></script><script type="text/javascript" src="modules/clients/config/clients.client.config.js"></script><script type="text/javascript" src="modules/clients/config/clients.client.routes.js"></script><script type="text/javascript" src="modules/clients/controllers/clients.client.controller.js"></script><script type="text/javascript" src="modules/clients/services/clients.client.service.js"></script><script type="text/javascript" src="modules/core/config/core.client.routes.js"></script><script type="text/javascript" src="modules/core/controllers/header.client.controller.js"></script><script type="text/javascript" src="modules/core/services/menus.client.service.js"></script><script type="text/javascript" src="modules/ingredients/config/ingredients.client.config.js"></script><script type="text/javascript" src="modules/ingredients/config/ingredients.client.routes.js"></script><script type="text/javascript" src="modules/ingredients/controllers/ingredients.client.controller.js"></script><script type="text/javascript" src="modules/ingredients/services/ingredients.client.service.js"></script><script type="text/javascript" src="modules/orders/config/orders.client.config.js"></script><script type="text/javascript" src="modules/orders/config/orders.client.routes.js"></script><script type="text/javascript" src="modules/orders/controllers/orders.client.controller.js"></script><script type="text/javascript" src="modules/orders/services/orders.client.service.js"></script><script type="text/javascript" src="modules/products/config/products.client.config.js"></script><script type="text/javascript" src="modules/products/config/products.client.routes.js"></script><script type="text/javascript" src="modules/products/controllers/products.client.controller.js"></script><script type="text/javascript" src="modules/products/services/products.client.service.js"></script><script type="text/javascript" src="modules/users/config/users.client.config.js"></script><script type="text/javascript" src="modules/users/config/users.client.routes.js"></script><script type="text/javascript" src="modules/users/controllers/authentication.client.controller.js"></script><script type="text/javascript" src="modules/users/controllers/password.client.controller.js"></script><script type="text/javascript" src="modules/users/controllers/settings.client.controller.js"></script><script type="text/javascript" src="modules/users/services/authentication.client.service.js"></script><script type="text/javascript" src="modules/users/services/users.client.service.js"></script> 
+
+	
+	<!--Livereload script rendered -->
+	<script type="text/javascript" src="http://localhost:35729/livereload.js"></script>
+	
+
+
+
+</body></html>
