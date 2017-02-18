@@ -1,6 +1,6 @@
 <section class="row" data-ng-controller="AuthenticationController">
-	<h3 class="col-md-12 text-center">Sign up using your social accounts</h3>
-	<div class="col-md-12 text-center">
+	<h3 class="hidden col-md-12 text-center">Sign up using your social accounts</h3>
+	<div class=" hidden col-md-12 text-center">
 		<a href="/auth/facebook" class="undecorated-link">
 			<img src="/modules/users/img/buttons/facebook.png">
 		</a>
@@ -17,7 +17,7 @@
 			<img src="/modules/users/img/buttons/github.png">
 		</a>
 	</div>
-	<h3 class="col-md-12 text-center">Or with your email</h3>
+	<h3 class="col-md-12 text-center">Sign up</h3>
 	<div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
 		<form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
 			<fieldset>
@@ -47,6 +47,9 @@
 				</div>
 				<div data-ng-show="error" class="text-center text-danger">
 					<strong data-ng-bind="error"></strong>
+				</div>
+				<div data-ng-show="message" class="text-center text-success">
+					<strong data-ng-bind="message"></strong>
 				</div>
 			</fieldset>
 		</form>

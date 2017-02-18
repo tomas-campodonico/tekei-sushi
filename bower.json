@@ -13,7 +13,9 @@
     "bootstrap": "~3",
     "eonasdan-bootstrap-datetimepicker": "~4.15.35",
     "moment": "~2.10.6",
-    "toggle": "~0.0.2",
     "underscore": "~1.8.3"
+  },
+  "devDependencies": {
+    "angular-translate": "^2.14.0"
   }
 }

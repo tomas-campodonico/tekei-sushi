@@ -9,13 +9,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 
 		$scope.signup = function() {
 			$http.post('/auth/signup', $scope.credentials).success(function(response) {
-				// If successful we assign the response to the global user model
-				$scope.authentication.user = response;
-
-				// And redirect to the index page
-				$location.path('/');
+				$scope.error = null;
+				$scope.message = 'The user has been created successfully. The system admin has to accept your request before you can start using your account';
 			}).error(function(response) {
 				$scope.error = response.message;
+				$scope.message = null;
 			});
 		};
 

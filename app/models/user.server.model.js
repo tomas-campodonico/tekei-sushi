@@ -37,10 +37,6 @@ var UserSchema = new Schema({
 		default: '',
 		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
 	},
-	displayName: {
-		type: String,
-		trim: true
-	},
 	email: {
 		type: String,
 		trim: true,
@@ -50,9 +46,13 @@ var UserSchema = new Schema({
 	},
 	username: {
 		type: String,
-		unique: 'testing error message',
+		unique: true,
 		required: 'Please fill in a username',
 		trim: true
+	},
+	accepted: {
+		type: Boolean,
+		default: false
 	},
 	password: {
 		type: String,
@@ -91,16 +91,30 @@ var UserSchema = new Schema({
 	}
 });
 
+UserSchema.virtual('displayName').get(() => {
+	return `${this.firstName} ${this.lastName}`;
+});
+
 /**
  * Hook a pre save method to hash the password
  */
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function(next, done) {
+	var self = this;
+
 	if (this.password && this.password.length > 6) {
 		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 		this.password = this.hashPassword(this.password);
 	}
 
-	next();
+	mongoose.model('User').findOne({
+		username: this.username
+	}, function(err, user) {
+		if (user) {
+			self.invalidate('username', 'There is already a user with that username.');
+      return done(self);
+		}
+		next();
+	});
 });
 
 /**
