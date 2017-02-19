@@ -43,7 +43,7 @@ exports.forgot = function(req, res, next) {
 						user.resetPasswordToken = token;
 						user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
-						user.save(function(err) {
+						User.update({username: req.body.username}, user, function(err) {
 							done(err, token, user);
 						});
 					}
@@ -127,7 +127,7 @@ exports.reset = function(req, res, next) {
 						user.resetPasswordToken = undefined;
 						user.resetPasswordExpires = undefined;
 
-						user.save(function(err) {
+						User.update({resetPasswordToken: req.params.token}, user, function(err) {
 							if (err) {
 								return res.status(400).send({
 									message: errorHandler.getErrorMessage(err)
@@ -137,7 +137,7 @@ exports.reset = function(req, res, next) {
 									if (err) {
 										res.status(400).send(err);
 									} else {
-										// Return authenticated user 
+										// Return authenticated user
 										res.json(user);
 
 										done(err, user);

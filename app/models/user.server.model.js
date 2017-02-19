@@ -91,7 +91,7 @@ var UserSchema = new Schema({
 	}
 });
 
-UserSchema.virtual('displayName').get(() => {
+UserSchema.virtual('displayName').get(function() {
 	return `${this.firstName} ${this.lastName}`;
 });
 

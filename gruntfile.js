@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         },
 		jshint: {
 			all: {
-				src: watchFiles.clientJS.concat(watchFiles.serverJS),
+				src: watchFiles.clientJS.concat(watchFiles.serverJS, watchFiles.mochaTests),
 				options: {
 					jshintrc: true
 				}
@@ -119,13 +119,16 @@ module.exports = function(grunt) {
 		},
 		concurrent: {
 			default: ['shell', 'nodemon', 'watch'],
-			debug: ['nodemon', 'watch', 'node-inspector'],
+			debug: ['shell', 'nodemon', 'watch', 'node-inspector'],
 			options: {
 				logConcurrentOutput: true,
 				limit: 10
 			}
 		},
 		env: {
+			dev: {
+				NODE_ENV: 'development'
+			},
 			test: {
 				NODE_ENV: 'test'
 			},
@@ -163,10 +166,15 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['lint', 'concurrent:default']);
+	grunt.registerTask('default', 'Default task', function() {
+		grunt.log.writeln('There is no default task. To run the app locally, run grunt serve.');
+	});
+
+	// Serve task.
+	grunt.registerTask('serve', ['env:dev', 'lint', 'concurrent:default']);
 
 	// Debug task.
-	grunt.registerTask('debug', ['lint', 'concurrent:debug']);
+	grunt.registerTask('debug', ['env:dev', 'lint', 'concurrent:debug']);
 
 	// Secure task(s).
 	grunt.registerTask('secure', ['env:secure', 'lint', 'concurrent:default']);
