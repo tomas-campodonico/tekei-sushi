@@ -50,10 +50,13 @@ module.exports = function(grunt) {
 			}
 		},
 		shell: {
-        	mongo: {
-            	command: 'start mongod'
-        	}
-        },
+    	mongo: {
+      	command: 'start sh startMongo.sh',
+				options: {
+					async: true
+				}
+    	}
+    },
 		jshint: {
 			all: {
 				src: watchFiles.clientJS.concat(watchFiles.serverJS, watchFiles.mochaTests),

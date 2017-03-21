@@ -11,7 +11,8 @@ var _ = require('lodash'),
 	config = require('../../../config/config'),
 	nodemailer = require('nodemailer'),
 	async = require('async'),
-	crypto = require('crypto');
+	crypto = require('crypto'),
+	Logger = require('../../helpers/logger');
 
 /**
  * Forgot for reset password (forgot POST)
@@ -42,8 +43,7 @@ exports.forgot = function(req, res, next) {
 					} else {
 						user.resetPasswordToken = token;
 						user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-						User.update({username: req.body.username}, user, function(err) {
+						user.save(function(err, user) {
 							done(err, token, user);
 						});
 					}
@@ -91,6 +91,7 @@ exports.forgot = function(req, res, next) {
  * Reset password GET from email token
  */
 exports.validateResetToken = function(req, res) {
+	Logger.info('Validating reset token: ' + req.params.token);
 	User.findOne({
 		resetPasswordToken: req.params.token,
 		resetPasswordExpires: {
@@ -98,6 +99,7 @@ exports.validateResetToken = function(req, res) {
 		}
 	}, function(err, user) {
 		if (!user) {
+			Logger.error('There is no user with that reset token.');
 			return res.redirect('/#!/password/reset/invalid');
 		}
 
@@ -126,8 +128,7 @@ exports.reset = function(req, res, next) {
 						user.password = passwordDetails.newPassword;
 						user.resetPasswordToken = undefined;
 						user.resetPasswordExpires = undefined;
-
-						User.update({resetPasswordToken: req.params.token}, user, function(err) {
+						user.save(function(err) {
 							if (err) {
 								return res.status(400).send({
 									message: errorHandler.getErrorMessage(err)

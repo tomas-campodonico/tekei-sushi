@@ -19,15 +19,31 @@ exports.signup = function(req, res) {
 	user.provider = 'local';
 	user.roles = 'user';
 
-	// Then save the user
-	user.save(function(err) {
+	User.findOne({
+		username: user.username
+	}, function(err, user) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			return res.sendStatus(200);
 		}
+
+		if (user) {
+			return res.status(400).send({
+				message: 'The username must be unique'
+			});
+		}
+
+		// Then save the user
+		user.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				return res.sendStatus(200);
+			}
+		});
 	});
 };
 

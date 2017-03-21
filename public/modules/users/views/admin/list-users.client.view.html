@@ -1,0 +1,45 @@
+<section data-ng-controller="UsersController" data-ng-init="find()" class="users">
+    <div class="page-header">
+        <h1>Users</h1>
+    </div>
+    <div class="input-group" ng-hide="!users.length">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </span>
+        <input placeholder="Search" class="form-control" ng-model="searchText" class="pull-right">
+    </div>
+
+    <div ng-hide="!users.length">
+        <input type="checkbox" ng-model="notAcceptedFilter"> Show only not accepted users
+    </div>
+
+    <table id="search-table" class="table table-hover table-responsive clickable-table" ng-hide="!users.length">
+        <thead>
+            <th class="text-center">Username</th>
+            <th class="text-center">First name</th>
+            <th class="text-center">Last name</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">Acepted</th>
+            <th class="text-center">Created</th>
+            <th class="text-center">Is admin?</th>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="user in users | orderBy:'created' | filter:searchText | filter: (notAcceptedFilter || '') && {accepted: false}">
+                <td class="list-group-item-heading" data-ng-bind="user.username"></td>
+                <td class="list-group-item-heading" data-ng-bind="user.firstName"></td>
+                <td class="list-group-item-heading" data-ng-bind="user.lastName"></td>
+                <td class="list-group-item-heading" data-ng-bind="user.email"></td>
+                <td class="list-group-item-heading" data-ng-bind="user.accepted"></td>
+                <td class="list-group-item-heading">{{user.created | date:'dd/MM/yyyy'}}</td>
+                <td class="list-group-item-heading text-center hidden-xs">
+                    <button class="btn btn-success" ng-show="!user.accepted" ng-click="changeStatus(user._id, 1, $event)">Accept</button>
+                    <button class="btn btn-danger" ng-show="user.accepted" ng-click="remove(user)">Disable</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-hide="users.length">
+        There is no user created.
+    </div>
+</section>

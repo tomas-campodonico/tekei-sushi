@@ -1,0 +1,12 @@
+{"name":"appLogger","hostname":"Dell-PC","pid":5768,"level":30,"msg":"Validating reset token...","time":"2017-03-19T22:44:04.179Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":5768,"level":50,"msg":"There is no user with that reset token.","time":"2017-03-19T22:44:04.191Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":5072,"level":30,"msg":"Validating reset token: 2d95e860f25718422ae11df150e7413a55113068","time":"2017-03-19T22:54:19.649Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":5072,"level":50,"msg":"There is no user with that reset token.","time":"2017-03-19T22:54:19.799Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":2772,"level":30,"msg":"Validating reset token: 22653c7fcb862b87d5017d016991513276b379da","time":"2017-03-20T23:00:23.623Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":2772,"level":50,"msg":"There is no user with that reset token.","time":"2017-03-20T23:02:17.950Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":2772,"level":30,"msg":"Validating reset token: fa2db427f13446aaab29d4ed892962e2c49692cb","time":"2017-03-20T23:04:44.978Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":2772,"level":50,"msg":"There is no user with that reset token.","time":"2017-03-20T23:04:44.980Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":3632,"level":30,"msg":"Validating reset token: d2a1c65b975f2debe81ed8a2dec14ef87902d68a","time":"2017-03-20T23:39:02.711Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":3632,"level":50,"msg":"There is no user with that reset token.","time":"2017-03-20T23:39:02.714Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":4772,"level":30,"msg":"Validating reset token: ee54aab82c92eabfbb0ee3a3b1eb3a5176391053","time":"2017-03-21T00:13:27.091Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":5576,"level":30,"msg":"Validating reset token: e73a10127757bf6bfd8f40af7ea90babe81ed9d2","time":"2017-03-21T00:19:30.611Z","v":0}

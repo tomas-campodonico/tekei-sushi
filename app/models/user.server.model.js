@@ -18,7 +18,7 @@ var validateLocalStrategyProperty = function(property) {
  * A Validation function for local strategy password
  */
 var validateLocalStrategyPassword = function(password) {
-	return (this.provider !== 'local' || (password && password.length > 6));
+	return (this.provider !== 'local' || (password && password.length >= 6));
 };
 
 /**
@@ -98,23 +98,17 @@ UserSchema.virtual('displayName').get(function() {
 /**
  * Hook a pre save method to hash the password
  */
-UserSchema.pre('save', function(next, done) {
-	var self = this;
+UserSchema.methods.hashNewPassword = function(next, done, cb) {
+	
+};
 
-	if (this.password && this.password.length > 6) {
+UserSchema.pre('save', function (next) {
+	if (this.password && this.password.length >= 6) {
 		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 		this.password = this.hashPassword(this.password);
 	}
 
-	mongoose.model('User').findOne({
-		username: this.username
-	}, function(err, user) {
-		if (user) {
-			self.invalidate('username', 'There is already a user with that username.');
-      return done(self);
-		}
-		next();
-	});
+	next();
 });
 
 /**
