@@ -27,10 +27,11 @@ var app = require('./config/express')(db);
 require('./config/passport')();
 
 // Start the app by listening on <port>
-app.listen(config.port);
+app.set('port', process.env.PORT || config.port);
+app.listen(app.get('port'));
 
 // Expose app
 exports = module.exports = app;
 
 // Logging initialization
-console.log('TekeiSushi application started on port ' + config.port);
+console.log('TekeiSushi application started on port ' + app.get('port'));
