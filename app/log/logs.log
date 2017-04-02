@@ -10,3 +10,4 @@
 {"name":"appLogger","hostname":"Dell-PC","pid":3632,"level":50,"msg":"There is no user with that reset token.","time":"2017-03-20T23:39:02.714Z","v":0}
 {"name":"appLogger","hostname":"Dell-PC","pid":4772,"level":30,"msg":"Validating reset token: ee54aab82c92eabfbb0ee3a3b1eb3a5176391053","time":"2017-03-21T00:13:27.091Z","v":0}
 {"name":"appLogger","hostname":"Dell-PC","pid":5576,"level":30,"msg":"Validating reset token: e73a10127757bf6bfd8f40af7ea90babe81ed9d2","time":"2017-03-21T00:19:30.611Z","v":0}
+{"name":"appLogger","hostname":"Dell-PC","pid":1768,"level":30,"msg":"Validating reset token: 49c9219ef089e6cd5bbedb9aa37eb2398814d45d","time":"2017-04-02T18:59:58.112Z","v":0}

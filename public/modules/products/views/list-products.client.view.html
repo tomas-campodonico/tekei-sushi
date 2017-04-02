@@ -15,10 +15,12 @@
     <table id="client-table" class="table table-hover table-responsive clickable-table" ng-hide="!products.length">
         <thead>
             <th>Name</th>
+            <th>Price</th>
         </thead>
         <tbody>
             <tr data-ng-repeat="product in products | filter:searchText" ng-click="showProduct(product._id)">
                 <td class="list-group-item-heading" data-ng-bind="product.name"></td>
+                <td class="list-group-item-heading" data-ng-bind="product.price"></td>
             </tr>
         </tbody>
     </table>
