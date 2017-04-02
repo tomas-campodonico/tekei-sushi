@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "grunt",
+    "postinstall": "./node_modules/bower/bin/bower install",
     "test": "grunt test"
   },
   "dependencies": {
