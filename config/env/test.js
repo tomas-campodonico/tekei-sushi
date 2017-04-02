@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/tekeisushi-test',
+	db: 'mongodb://tekei-web-app:tekei@ds135800.mlab.com:35800/tekei-sushi',
 	port: 3001,
 	app: {
 		title: 'TekeiSushi - Test Environment'
