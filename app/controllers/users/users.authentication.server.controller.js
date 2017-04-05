@@ -21,14 +21,14 @@ exports.signup = function(req, res) {
 
 	User.findOne({
 		username: user.username
-	}, function(err, user) {
+	}, function(err, existingUser) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		}
 
-		if (user) {
+		if (existingUser) {
 			return res.status(400).send({
 				message: 'The username must be unique'
 			});

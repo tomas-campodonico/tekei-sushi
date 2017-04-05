@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/tekeisushi-dev',
+	db: 'mongodb://localhost:27017/tekei-sushi',
 	app: {
 		title: 'TekeiSushi - Development Environment'
 	},
