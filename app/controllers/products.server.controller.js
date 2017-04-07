@@ -19,14 +19,31 @@ exports.create = function(req, res) {
 	});
 	var product = new Product(req.body);
 
-	product.save(function(err) {
+	Product.findOne({
+		name: product.name
+	}, function(err, existingProduct) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(product);
 		}
+
+		if (existingProduct) {
+			return res.status(400).send({
+				message: 'There is already a product with that name'
+			});
+		}
+
+		// Then save the product
+		product.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(product);
+			}
+		});
 	});
 };
 
@@ -48,14 +65,31 @@ exports.update = function(req, res) {
 		ingr.ingredient = ingr.ingredient._id;
 	});
 
-	product.save(function(err) {
+	Product.findOne({
+		name: product.name
+	}, function(err, existingProduct) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(product);
 		}
+
+		if (existingProduct && !existingProduct._id.equals(product._id)) {
+			return res.status(400).send({
+				message: 'There is already a product with that name'
+			});
+		}
+
+		// Then save the product
+		product.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(product);
+			}
+		});
 	});
 };
 

@@ -9,20 +9,37 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 /**
- * Create a Ingredient
+ * Create an Ingredient
  */
 exports.create = function(req, res) {
 	var ingredient = new Ingredient(req.body);
-	ingredient.user = req.user;
 
-	ingredient.save(function(err) {
+	Ingredient.findOne({
+		name: ingredient.name
+	}, function(err, existingIngredient) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(ingredient);
 		}
+
+		if (existingIngredient) {
+			return res.status(400).send({
+				message: 'There is already an ingredient with that name'
+			});
+		}
+
+		// Then save the ingredient
+		ingredient.user = req.user;
+		ingredient.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(ingredient);
+			}
+		});
 	});
 };
 
@@ -34,21 +51,38 @@ exports.read = function(req, res) {
 };
 
 /**
- * Update a Ingredient
+ * Update an Ingredient
  */
 exports.update = function(req, res) {
 	var ingredient = req.ingredient ;
 
 	ingredient = _.extend(ingredient , req.body);
 
-	ingredient.save(function(err) {
+	Ingredient.findOne({
+		name: ingredient.name
+	}, function(err, existingIngredient) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(ingredient);
 		}
+
+		if (existingIngredient && !existingIngredient._id.equals(ingredient._id)) {
+			return res.status(400).send({
+				message: 'There is already an ingredient with that name'
+			});
+		}
+
+		// Then save the ingredient
+		ingredient.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(ingredient);
+			}
+		});
 	});
 };
 
