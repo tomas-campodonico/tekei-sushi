@@ -140,7 +140,7 @@ module.exports = function(db) {
 		});
 	});
 
-	if (process.env.NODE_ENV === 'secure') {
+	if (process.env.NODE_ENV !== 'development') {
 		// Log SSL usage
 		console.log('Securely using https protocol');
 

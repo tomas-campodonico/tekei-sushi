@@ -1,0 +1,8 @@
+{
+  "name": "Tekei Sushi Management",
+  "short_name": "Tekei Sushi",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "A webapp to manage Tekei sales and stock."
+}
