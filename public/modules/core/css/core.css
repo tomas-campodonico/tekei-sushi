@@ -1,6 +1,15 @@
-.content {
-	margin-top: 50px;
+body {
+	font-family: Roboto, Helvetica, Arial, sans-serif;
 }
+
+.content {
+	margin-top: 55px;
+}
+
+.page-header {
+	margin-top: 0;
+}
+
 .undecorated-link:hover {
 	text-decoration: none;
 }
@@ -48,6 +57,10 @@ img {
 
 	.date-container, .time-container {
 		width: 49%;
+	}
+
+	.navbar-nav .open .dropdown-menu > li > a {
+		line-height: 35px;
 	}
 }
 
@@ -169,4 +182,49 @@ img {
 }
 
 /* end clock icon */
+
+
+/* navbar */
+.navbar {
+	background-color: #eb7223;
+	border: 0;
+	border-radius: 0;
+	box-shadow: 0 2px 5px rgba(0,0,0,.26);
+	z-index: 10;
+	min-height: 55px;
+	padding-top: 2px;
+}
+
+.navbar a {
+	color: rgba(255,255,255, 0.84);
+}
+
+.navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
+	max-height: 373px;
+}
+
+.navbar ul li > a:hover, .navbar ul li > a:focus {
+	background-color: #eb7223;
+}
+
+.navbar ul li.open > a:focus, .navbar ul li.open > a, .navbar ul li.open > a:hover {
+	background-color: #eb7223;
+}
+
+.navbar-toggle .icon-bar {
+	background-color: rgba(255,255,255, 0.84);
+}
+
+@media (min-width: 768px) {
+	.dropdown > .dropdown-menu {
+		top: 52px;
+		border-radius: 0;
+		border-top: none;
+		background-color: #eb7223;
+	}
+}
+
+
+/* Home page */
+
 
