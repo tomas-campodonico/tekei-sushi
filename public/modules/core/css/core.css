@@ -1,9 +1,13 @@
 body {
 	font-family: Roboto, Helvetica, Arial, sans-serif;
+	background: #eeeeee;
+	overflow: hidden;
 }
 
-.content {
-	margin-top: 55px;
+.app-container {
+	height: calc(100% - 55px);
+	margin-top: 55px; 
+	overflow: auto;
 }
 
 .page-header {
@@ -12,15 +16,6 @@ body {
 
 .undecorated-link:hover {
 	text-decoration: none;
-}
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-	display: none !important;
-}
-.ng-invalid.ng-dirty {
-	border-color: #FA787E;
-}
-.ng-valid.ng-dirty {
-	border-color: #78FA89;
 }
 
 header .dropdown-toggle {
@@ -189,13 +184,15 @@ img {
 	background-color: #eb7223;
 	border: 0;
 	border-radius: 0;
-	box-shadow: 0 2px 5px rgba(0,0,0,.26);
+	box-shadow: 0 2px 5px rgb(0, 0, 0);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, .26);
 	z-index: 10;
 	min-height: 55px;
 	padding-top: 2px;
 }
 
 .navbar a {
+	color: rgb(255, 255, 255);
 	color: rgba(255,255,255, 0.84);
 }
 
@@ -212,6 +209,7 @@ img {
 }
 
 .navbar-toggle .icon-bar {
+	background-color: rgb(255,255,255);
 	background-color: rgba(255,255,255, 0.84);
 }
 
@@ -223,8 +221,3 @@ img {
 		background-color: #eb7223;
 	}
 }
-
-
-/* Home page */
-
-
